@@ -1,0 +1,2711 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>VinApex – Free VIN Check & Vehicle History Report</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --b: #0084ff;
+            --b2: #0066cc;
+            --o: #ffb300;
+            --bg: #fff;
+            --lb: #eaf4ff;
+            --ink: #0f1830;
+            --mut: #6b7280;
+            --line: #e5e7eb;
+            --ok: #00b341;
+            --bad: #e5484d;
+            --sf: #fff;
+            color-scheme: light;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        @media(prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0b1220;
+                --lb: #10203a;
+                --ink: #eef2fa;
+                --mut: #9aa7bd;
+                --line: #24324f;
+                --sf: #131f36;
+                --b: #3aa0ff;
+                color-scheme: dark
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #0b1220;
+            --lb: #10203a;
+            --ink: #eef2fa;
+            --mut: #9aa7bd;
+            --line: #24324f;
+            --sf: #131f36;
+            --b: #3aa0ff;
+            color-scheme: dark
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-padding-top: calc(80px + env(safe-area-inset-top, 0px));
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 400 16px/1.6 Inter, system-ui, sans-serif;
+            letter-spacing: -.01em
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            line-height: 1.12;
+            font-weight: 800;
+            letter-spacing: -.025em
+        }
+
+        a {
+            color: inherit
+        }
+
+        .w {
+            max-width: 1340px;
+            margin: 0 auto;
+            padding: 0 28px
+        }
+
+        header {
+            position: sticky;
+            top: env(safe-area-inset-top, 0px);
+            z-index: 20;
+            background: var(--bg);
+            border-bottom: 1px solid var(--line)
+        }
+
+        header .w {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            height: 72px
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 26px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            letter-spacing: -.03em
+        }
+
+        .logo b {
+            color: var(--b)
+        }
+
+        .logo svg {
+            width: 28px
+        }
+
+        header nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            gap: 30px
+        }
+
+        header nav a {
+            text-decoration: none;
+            color: var(--mut);
+            font-size: 15px;
+            font-weight: 500
+        }
+
+        header nav a:hover {
+            color: var(--b)
+        }
+
+        .pill {
+            border: 1.5px solid var(--b);
+            color: var(--b);
+            border-radius: 99px;
+            padding: 10px 20px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 15px;
+            background: none;
+            cursor: pointer
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 0;
+            border-radius: 99px;
+            padding: 0 28px;
+            min-height: 54px;
+            font: 700 17px Inter;
+            cursor: pointer;
+            background: var(--o);
+            color: #1a1200;
+            text-decoration: none
+        }
+
+        .btn.bl {
+            background: var(--b);
+            color: #fff
+        }
+
+        .btn.ol {
+            background: none;
+            border: 1.5px solid var(--b);
+            color: var(--b)
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--b);
+            outline-offset: 2px
+        }
+
+        .hero {
+            background: radial-gradient(900px 460px at 85% -10%, #d6e8ff, transparent 65%), radial-gradient(600px 300px at 0 100%, #fff3d1, transparent 70%), linear-gradient(180deg, #fff, #f3f8ff);
+            color: var(--ink);
+            padding: 64px 0 60px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .hero:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(90deg, #0f18300a 0 1px, transparent 1px 96px);
+            pointer-events: none
+        }
+
+        .hero .w {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center
+        }
+
+        .hero h6 {
+            color: var(--b);
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0 0 14px
+        }
+
+        .hero h1 {
+            font-size: clamp(34px, 4.6vw, 56px);
+            margin-bottom: 16px;
+            color: var(--ink)
+        }
+
+        .hero .sub {
+            font-size: 22px;
+            color: #4b5a75;
+            margin: 0 0 26px
+        }
+
+        .hero .er {
+            color: var(--bad)
+        }
+
+        .scene {
+            perspective: 1100px;
+            position: relative;
+            height: 480px
+        }
+
+        .scene:after {
+            content: "";
+            position: absolute;
+            left: 8%;
+            right: 0;
+            bottom: 4px;
+            height: 34px;
+            background: radial-gradient(#0f183033, transparent 70%);
+            filter: blur(6px);
+            pointer-events: none
+        }
+
+        .phone3d {
+            position: absolute;
+            left: 4%;
+            top: 0;
+            width: 264px;
+            padding: 7px;
+            border: 3px solid #b4bccb;
+            border-radius: 50px;
+            background: #0b0d12;
+            box-shadow: inset 0 0 0 1px #6a7384, -3px 3px 0 #4a5160, -7px 7px 0 #2a2f3a, 30px 40px 60px #0f183045;
+            transform: rotateY(-18deg) rotateX(5deg);
+            transition: transform .15s
+        }
+
+        .phone3d:before {
+            content: "";
+            position: absolute;
+            left: -8px;
+            top: 92px;
+            width: 4px;
+            height: 26px;
+            border-radius: 2px;
+            background: #8a93a3;
+            box-shadow: 0 44px 0 #8a93a3, 0 -46px 0 #8a93a3
+        }
+
+        .phone3d:after {
+            content: "";
+            position: absolute;
+            right: -8px;
+            top: 140px;
+            width: 4px;
+            height: 64px;
+            border-radius: 2px;
+            background: #8a93a3
+        }
+
+        .scr {
+            position: relative;
+            background: linear-gradient(#fff, #f2f6fc);
+            border-radius: 42px;
+            overflow: hidden;
+            padding-bottom: 10px;
+            color: #0f1830
+        }
+
+        .isl {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 84px;
+            height: 25px;
+            border-radius: 20px;
+            background: #000;
+            z-index: 2
+        }
+
+        .isl:after {
+            content: "";
+            position: absolute;
+            right: 9px;
+            top: 8px;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: radial-gradient(#27304a, #0b0f1a)
+        }
+
+        .sb {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 44px;
+            padding: 8px 15px 0 24px;
+            font: 700 13px Inter, sans-serif
+        }
+
+        .si {
+            display: flex;
+            gap: 4px;
+            align-items: center
+        }
+
+        .ah {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 16px 0;
+            font-weight: 800;
+            font-size: 15px
+        }
+
+        .ah span {
+            color: #0084ff
+        }
+
+        .vt {
+            padding: 8px 16px 0
+        }
+
+        .scr .vt small {
+            text-align: left;
+            letter-spacing: .06em;
+            font-size: 9.5px
+        }
+
+        .scr h5 {
+            margin: 2px 0 0;
+            font-size: 18px;
+            text-align: left
+        }
+
+        .vt span {
+            font-size: 10.5px;
+            color: #6b7280;
+            letter-spacing: .03em
+        }
+
+        .scr .crash {
+            margin: 10px 12px 8px;
+            height: 112px;
+            border-radius: 16px;
+            background: linear-gradient(#eef6ff, #b9cde5);
+            position: relative;
+            overflow: hidden
+        }
+
+        .scr .crash svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%
+        }
+
+        .rows {
+            background: #fff;
+            border-radius: 16px;
+            margin: 0 12px;
+            box-shadow: 0 1px 3px #0f18301a
+        }
+
+        .ir {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            font-size: 11.5px;
+            font-weight: 600;
+            border-top: 1px solid #eef0f4
+        }
+
+        .ir:first-child {
+            border: 0
+        }
+
+        .ir b {
+            font-size: 10px;
+            padding: 3px 9px;
+            border-radius: 99px
+        }
+
+        .ir .a {
+            background: #fff1d2;
+            color: #a05f00
+        }
+
+        .ir .r {
+            background: #ffe2e3;
+            color: #c4161c
+        }
+
+        .ir .g {
+            background: #dcf6e5;
+            color: #0a7a35
+        }
+
+        .cta {
+            margin: 10px 12px 0;
+            background: linear-gradient(#2aa0ff, #0072e6);
+            color: #fff;
+            border-radius: 13px;
+            text-align: center;
+            font: 700 12px Inter, sans-serif;
+            padding: 10px;
+            box-shadow: 0 6px 14px #0084ff55
+        }
+
+        .hb {
+            display: block;
+            width: 96px;
+            height: 4px;
+            border-radius: 3px;
+            background: #0f1830;
+            margin: 12px auto 0
+        }
+
+        .car3d {
+            position: absolute;
+            right: -5%;
+            bottom: -16px;
+            width: 72%;
+            filter: drop-shadow(26px 30px 20px #0f183045);
+            transform: rotateY(14deg);
+            transition: transform .15s
+        }
+
+        .fl {
+            position: absolute;
+            background: #fff;
+            color: #0f1830;
+            border-radius: 14px;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 14px 30px #0f183030;
+            transform: translateZ(60px)
+        }
+
+        .tb {
+            display: inline-flex;
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+            background: var(--sf)
+        }
+
+        .tb button {
+            border: 0;
+            background: none;
+            color: var(--ink);
+            padding: 14px 22px;
+            font: 700 16px Inter;
+            cursor: pointer
+        }
+
+        .tb button[aria-selected=true] {
+            background: var(--ink);
+            color: var(--bg)
+        }
+
+        .vb {
+            display: flex;
+            border: 2px solid var(--o);
+            border-radius: 99px;
+            padding: 6px;
+            background: var(--sf);
+            box-shadow: 0 2px 4px #0f18300d, 0 16px 36px #0f18301c
+        }
+
+        .vb input {
+            flex: 1;
+            min-width: 0;
+            border: 0;
+            background: none;
+            padding: 0 22px;
+            font: 600 21px Inter;
+            color: var(--ink);
+            text-transform: uppercase
+        }
+
+        .vb input::placeholder {
+            text-transform: none;
+            color: #9aa3b2;
+            font-weight: 600
+        }
+
+        .vb input:focus-visible {
+            outline: 0
+        }
+
+        .er {
+            color: var(--bad);
+            min-height: 22px;
+            font-size: 14px;
+            margin: 8px 6px 0
+        }
+
+        .lk {
+            color: var(--mut);
+            font-size: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .lk a {
+            color: var(--b);
+            text-decoration: underline
+        }
+
+        .trust {
+            padding: 34px 0;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 26px;
+            align-items: center
+        }
+
+        .av {
+            display: flex
+        }
+
+        .av i {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 2px solid var(--bg);
+            margin-left: -10px;
+            background: linear-gradient(135deg, #7aa7d9, #34507a)
+        }
+
+        .av i:first-child {
+            margin: 0
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            text-align: center;
+            padding: 16px 0 50px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        .stats span {
+            color: var(--mut);
+            font-size: 15px;
+            display: block
+        }
+
+        .stats span:before {
+            content: "✓ ";
+            color: var(--ok)
+        }
+
+        .stats b {
+            font-size: 26px;
+            font-weight: 800
+        }
+
+        .sec {
+            padding: 70px 0
+        }
+
+        .cen {
+            text-align: center
+        }
+
+        .cen h2 {
+            font-size: clamp(30px, 3.6vw, 44px)
+        }
+
+        .cen p {
+            color: var(--mut);
+            max-width: 62ch;
+            margin: 14px auto 0;
+            font-size: 18px
+        }
+
+        .vid {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 56px;
+            align-items: center
+        }
+
+        .vid h2 {
+            font-size: 38px;
+            margin-bottom: 20px
+        }
+
+        .vid p {
+            color: var(--mut);
+            margin: 0 0 26px
+        }
+
+        .vp {
+            position: relative;
+            aspect-ratio: 16/10;
+            border-radius: 20px;
+            overflow: hidden;
+            background: linear-gradient(160deg, #eaf3ff, #fff 60%, #fff3d6);
+            border: 1px solid var(--line);
+            box-shadow: 0 2px 4px #0f18300d, 0 30px 60px #0f183026;
+            user-select: none
+        }
+
+        .vs {
+            position: absolute;
+            inset: 0 0 44px 0;
+            display: flex;
+            flex-direction: column;
+            padding: 14px 16px 6px
+        }
+
+        .bw {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 10px 10px 0 0;
+            padding: 7px 10px;
+            font-size: 11px;
+            color: var(--mut)
+        }
+
+        .bw i {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff5f57
+        }
+
+        .bw i:nth-child(2) {
+            background: #febc2e
+        }
+
+        .bw i:nth-child(3) {
+            background: #28c840
+        }
+
+        .bw span {
+            margin-left: 10px;
+            background: #f1f4f9;
+            border-radius: 99px;
+            padding: 2px 12px
+        }
+
+        .sw {
+            position: relative;
+            flex: 1;
+            background: #fff;
+            border: 1px solid var(--line);
+            border-top: 0;
+            border-radius: 0 0 12px 12px;
+            overflow: hidden
+        }
+
+        .sc {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity .35s, transform .35s;
+            pointer-events: none
+        }
+
+        .sc.on {
+            opacity: 1;
+            transform: none
+        }
+
+        .sc h4 {
+            margin: 0;
+            font-size: clamp(13px, 1.9vw, 19px)
+        }
+
+        .sc .a,
+        .sc .b {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px
+        }
+
+        .fb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: min(88%, 430px);
+            border: 2px solid var(--o);
+            border-radius: 99px;
+            padding: 5px 5px 5px 16px;
+            font: 700 clamp(10px, 1.4vw, 15px) ui-monospace, monospace;
+            letter-spacing: .05em;
+            min-height: 42px;
+            box-shadow: 0 8px 22px #ffb30033
+        }
+
+        .fb span {
+            flex: 1;
+            text-align: left
+        }
+
+        .fb span:after {
+            content: "|";
+            opacity: .6;
+            animation: bk 1s steps(2) infinite
+        }
+
+        .fb em {
+            font: 700 12px Inter, sans-serif;
+            background: var(--o);
+            color: #1a1200;
+            border-radius: 99px;
+            padding: 10px 14px;
+            font-style: normal;
+            transition: transform .15s;
+            box-shadow: 0 3px 0 #cc8f00
+        }
+
+        .fb em.pr {
+            transform: translateY(3px) scale(.95);
+            box-shadow: none
+        }
+
+        .sp {
+            width: 34px;
+            height: 34px;
+            border: 4px solid var(--lb);
+            border-top-color: var(--b);
+            border-radius: 50%;
+            animation: rt .8s linear infinite
+        }
+
+        .ch {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center
+        }
+
+        .ch b {
+            font-size: 11px;
+            background: var(--lb);
+            color: var(--b2);
+            border-radius: 99px;
+            padding: 6px 12px
+        }
+
+        .pm3 {
+            display: flex;
+            gap: 10px;
+            width: 92%
+        }
+
+        .pm3 div {
+            flex: 1;
+            border: 2px solid var(--line);
+            border-radius: 12px;
+            padding: 10px 4px;
+            font-size: 12px;
+            transition: .3s
+        }
+
+        .pm3 div b {
+            display: block;
+            font-size: clamp(14px, 1.8vw, 18px)
+        }
+
+        .pm3 div.sel {
+            border-color: var(--b);
+            box-shadow: 0 0 0 4px #0084ff26, 0 14px 24px #0084ff22;
+            transform: translateY(-5px)
+        }
+
+        .okk {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: var(--ok);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+            box-shadow: 0 8px 18px #00b34155
+        }
+
+        .cap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 2px 0;
+            font-weight: 700;
+            font-size: clamp(12px, 1.5vw, 15px)
+        }
+
+        .cap i {
+            flex: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--b);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font: 700 12px Inter, sans-serif;
+            font-style: normal
+        }
+
+        .vc2 {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 14px;
+            background: #0f1830;
+            color: #fff;
+            font-size: 12px
+        }
+
+        .vbar {
+            flex: 1;
+            height: 6px;
+            background: #ffffff40;
+            border-radius: 3px;
+            overflow: hidden;
+            cursor: pointer
+        }
+
+        .vbar i {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: var(--o)
+        }
+
+        .vtg {
+            background: none;
+            border: 0;
+            color: #fff;
+            font-size: 15px;
+            cursor: pointer;
+            width: 24px
+        }
+
+        .vp.pl .play {
+            display: none
+        }
+
+        .vp .play {
+            position: absolute;
+            inset: 0 0 44px 0;
+            margin: auto;
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: #000a;
+            border: 0;
+            display: grid;
+            place-items: center;
+            cursor: pointer
+        }
+
+        .vp .play:after {
+            content: "";
+            border-left: 26px solid #fff;
+            border-top: 16px solid transparent;
+            border-bottom: 16px solid transparent;
+            margin-left: 8px
+        }
+
+        .ftabs {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin: 50px 0 40px
+        }
+
+        .ftabs button {
+            background: none;
+            border: 0;
+            border-bottom: 4px solid var(--line);
+            padding: 14px 0 12px;
+            text-align: left;
+            font: 600 17px Inter;
+            color: var(--ink);
+            cursor: pointer
+        }
+
+        .ftabs button[aria-selected=true] {
+            color: var(--b);
+            border-color: var(--b)
+        }
+
+        .pane {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 70px;
+            align-items: center
+        }
+
+        .win {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: 0 1px 0 #fff inset, 0 2px 4px #0f18300d, 0 18px 36px #0f183016;
+            overflow: hidden
+        }
+
+        .win .bar {
+            background: var(--lb);
+            padding: 10px 14px;
+            display: flex;
+            gap: 6px
+        }
+
+        .win .bar i {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ff5f57
+        }
+
+        .win .bar i+i {
+            background: #febc2e
+        }
+
+        .win .bar i+i+i {
+            background: #28c840
+        }
+
+        .win .bd {
+            padding: 18px 22px
+        }
+
+        .win .li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-top: 1px solid var(--line);
+            font-size: 14px
+        }
+
+        .win .li:first-child {
+            border: 0
+        }
+
+        .ic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--lb);
+            display: grid;
+            place-items: center;
+            font-size: 34px;
+            margin-bottom: 22px
+        }
+
+        .pane h3 {
+            font-size: 34px;
+            margin-bottom: 26px
+        }
+
+        .src {
+            background: var(--lb);
+            border-radius: 14px;
+            padding: 28px 32px;
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 30px;
+            align-items: center
+        }
+
+        .src h4 {
+            margin: 0 0 8px;
+            font-size: 20px
+        }
+
+        .src p {
+            margin: 0;
+            color: var(--mut);
+            font-size: 15px
+        }
+
+        .src .sh {
+            font-weight: 800;
+            color: var(--b);
+            font-size: 22px;
+            border: 2px solid var(--b);
+            border-radius: 10px;
+            padding: 8px 14px
+        }
+
+        .cmp {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            overflow: hidden;
+            margin: 44px 0 30px
+        }
+
+        .cmp .h {
+            padding: 20px 24px;
+            font-weight: 800;
+            font-size: 22px;
+            background: var(--lb)
+        }
+
+        .cmp .h.p {
+            background: var(--b);
+            color: #fff
+        }
+
+        .cmp div.c {
+            padding: 20px 24px;
+            border-top: 1px solid var(--line);
+            font-size: 15px;
+            position: relative;
+            padding-left: 62px
+        }
+
+        .cmp div.c:before {
+            content: "✓";
+            position: absolute;
+            left: 24px;
+            top: 19px;
+            width: 24px;
+            height: 24px;
+            border: 1.5px solid var(--line);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 12px;
+            color: var(--mut)
+        }
+
+        .cmp .c.p {
+            background: var(--lb)
+        }
+
+        .cmp .c.p:before {
+            background: var(--b);
+            color: #fff;
+            border-color: var(--b)
+        }
+
+        .num {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center
+        }
+
+        .num>div {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 24px;
+            box-shadow: 0 1px 0 #fff inset, 0 2px 4px #0f18300d, 0 18px 36px #0f183016;
+            transition: transform .2s, box-shadow .2s
+        }
+
+        .num>div:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 2px 4px #0f18300d, 0 26px 44px #0f183024
+        }
+
+        .num .t {
+            font-size: 34px;
+            font-weight: 800
+        }
+
+        .num span {
+            color: var(--mut)
+        }
+
+        .cta1 {
+            border-radius: 20px;
+            background: linear-gradient(110deg, var(--lb) 55%, #8eaac6);
+            padding: 56px;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+            overflow: hidden
+        }
+
+        .cta1 h2 {
+            font-size: 44px
+        }
+
+        .cta1 h2 .d {
+            color: var(--b);
+            font-size: 76px
+        }
+
+        .cta1 p {
+            color: var(--mut);
+            font-size: 18px;
+            margin: 14px 0 24px;
+            max-width: 46ch
+        }
+
+        .mk {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px 30px;
+            margin-top: 30px
+        }
+
+        .mk b {
+            display: block;
+            margin-top: 14px
+        }
+
+        .mk a {
+            display: block;
+            color: var(--b);
+            text-decoration: none;
+            font-size: 15px
+        }
+
+        .bl {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 34px;
+            margin-top: 40px
+        }
+
+        .bl .im {
+            height: 200px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 60px
+        }
+
+        .bl .tag {
+            display: inline-block;
+            background: var(--lb);
+            color: var(--b);
+            border-radius: 99px;
+            padding: 5px 12px;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 16px 10px 10px 0
+        }
+
+        .bl h4 {
+            margin: 0 0 8px;
+            font-size: 20px
+        }
+
+        .bl p {
+            color: var(--mut);
+            margin: 0 0 12px;
+            font-size: 15px
+        }
+
+        .bl a {
+            color: var(--b);
+            font-weight: 600;
+            text-decoration: none
+        }
+
+        .faq {
+            max-width: 700px;
+            margin: 30px auto 0
+        }
+
+        details {
+            border-bottom: 1px solid var(--line);
+            padding: 20px 0
+        }
+
+        summary {
+            cursor: pointer;
+            font: 600 18px Inter;
+            display: flex;
+            justify-content: space-between;
+            list-style: none
+        }
+
+        summary:after {
+            content: "+";
+            font-size: 24px;
+            line-height: 1
+        }
+
+        details[open] summary:after {
+            content: "–"
+        }
+
+        details p {
+            color: var(--mut);
+            margin: 10px 0 0
+        }
+
+        .rate {
+            background: var(--lb);
+            border-radius: 14px;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px
+        }
+
+        .rate b.g {
+            color: var(--ok)
+        }
+
+        .stars button {
+            background: none;
+            border: 0;
+            font-size: 38px;
+            color: #ffb300;
+            cursor: pointer;
+            padding: 0 2px
+        }
+
+        .save {
+            background: linear-gradient(#fff0, var(--lb));
+            padding: 80px 0 70px;
+            text-align: center
+        }
+
+        .save .vb {
+            max-width: 600px;
+            margin: 22px auto 0
+        }
+
+        .save .tb {
+            margin-top: 34px
+        }
+
+        footer {
+            padding: 40px 0 30px;
+            font-size: 15px
+        }
+
+        .st {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 34px
+        }
+
+        .st h4,
+        .fc h4 {
+            margin: 0 0 14px;
+            font-size: 16px
+        }
+
+        .st a {
+            color: var(--mut);
+            text-decoration: none;
+            margin-right: 18px;
+            display: inline-block;
+            margin-bottom: 8px
+        }
+
+        .fc {
+            display: grid;
+            grid-template-columns: 1.2fr repeat(4, 1fr);
+            gap: 30px;
+            border-top: 1px solid var(--line);
+            padding-top: 36px
+        }
+
+        .fc a {
+            display: block;
+            color: var(--mut);
+            text-decoration: none;
+            padding: 4px 0
+        }
+
+        .fc a:hover,
+        .st a:hover {
+            color: var(--b)
+        }
+
+        .em {
+            width: 100%;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            padding: 14px 16px;
+            font: 500 16px Inter;
+            background: var(--sf);
+            color: var(--ink);
+            margin-bottom: 12px
+        }
+
+        .disc {
+            border-top: 1px solid var(--line);
+            margin-top: 34px;
+            padding-top: 20px;
+            color: var(--mut);
+            font-size: 13px;
+            line-height: 1.6
+        }
+
+        .disc b {
+            color: var(--ink)
+        }
+
+        .copy {
+            border-top: 1px solid var(--line);
+            margin-top: 34px;
+            padding-top: 20px;
+            color: var(--mut);
+            font-size: 13px
+        }
+
+        .ck {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+            background: var(--sf);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px #0003;
+            padding: 14px 20px;
+            font-size: 14px;
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            z-index: 30;
+            max-width: calc(100% - 100px)
+        }
+
+        .ck button {
+            background: none;
+            border: 0;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--ink)
+        }
+
+        .chat {
+            position: fixed;
+            right: 24px;
+            bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--b);
+            border: 0;
+            z-index: 31;
+            cursor: pointer;
+            display: grid;
+            place-items: center
+        }
+
+        .chat:after {
+            content: "";
+            width: 28px;
+            height: 24px;
+            background: #fff;
+            border-radius: 14px
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            top: calc(90px + env(safe-area-inset-top, 0px));
+            transform: translateX(-50%);
+            background: #0f1830;
+            color: #fff;
+            padding: 14px 22px;
+            border-radius: 12px;
+            display: none;
+            z-index: 40;
+            max-width: 90%
+        }
+
+        #res {
+            display: none
+        }
+
+        #res .g {
+            display: grid;
+            grid-template-columns: 1fr;
+            min-height: calc(100vh - 72px)
+        }
+
+        #rl {
+            padding: 44px 28px;
+            max-width: 1120px;
+            margin: 0 auto;
+            width: 100%
+        }
+
+        .vinb {
+            display: inline-block;
+            background: var(--lb);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-weight: 700;
+            margin: 14px 0 30px
+        }
+
+        .pkg {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 26px;
+            margin: 40px 0 30px;
+            perspective: 1400px;
+            align-items: stretch
+        }
+
+        .pkg .pc {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            overflow: hidden;
+            color: #0f1830;
+            border: 1.5px solid #cfd8e6;
+            border-radius: 22px;
+            padding: 34px 26px 26px;
+            background: linear-gradient(160deg, #fff, #f1f6fd);
+            box-shadow: inset 0 1px 0 #fff, 0 7px 0 #d3dbe8, 0 28px 40px #0f183026;
+            transition: transform .3s, box-shadow .3s;
+            cursor: pointer
+        }
+
+        .pkg .pc:nth-child(2) {
+            background: linear-gradient(135deg, #fff 0%, #eef2f8 22%, #c9d3e0 50%, #f3f6fa 74%, #cfd8e4 100%);
+            border-color: #aab6c6;
+            box-shadow: inset 0 1px 0 #fff, 0 7px 0 #98a5b8, 0 30px 44px #0f183030
+        }
+
+        .pkg .pc.g {
+            background: linear-gradient(135deg, #fff6d1 0%, #ffe699 24%, #eab949 52%, #fff0b3 76%, #dcab32 100%);
+            border-color: #c79a2c;
+            box-shadow: inset 0 1px 0 #fffbe6, 0 7px 0 #a8791a, 0 30px 44px #7a560a33
+        }
+
+        .pkg .pc:hover {
+            transform: translateY(-10px) rotateX(3deg)
+        }
+
+        .pkg .pc[aria-pressed=true] {
+            transform: translateY(-10px);
+            border-color: #0084ff;
+            box-shadow: inset 0 1px 0 #fff, 0 0 0 4px #0084ff40, 0 7px 0 #0066cc, 0 34px 48px #0084ff33
+        }
+
+        .pc h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            margin: 0;
+            color: #0f1830;
+            padding-right: 46px
+        }
+
+        .pc h3:before {
+            content: "";
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 30%, #d8ecff, #3aa0ff 55%, #0057b3);
+            box-shadow: 0 3px 5px #0005, inset 0 -2px 3px #0003
+        }
+
+        .pkg .pc:nth-child(2) h3:before {
+            background: radial-gradient(circle at 35% 30%, #fff, #b5c0cf 55%, #7d8aa0)
+        }
+
+        .pkg .pc.g h3:before {
+            background: radial-gradient(circle at 35% 30%, #fff7c8, #f0c040 55%, #a77a08)
+        }
+
+        .pc .pr {
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: -.03em;
+            margin: 10px 0 2px;
+            color: #0f1830
+        }
+
+        .pkg .pc.g .pr {
+            color: #3d2b00
+        }
+
+        .pc ul {
+            list-style: none;
+            margin: 16px 0 20px;
+            padding: 0;
+            flex: 1
+        }
+
+        .pc li {
+            padding: 6px 0 6px 26px;
+            position: relative;
+            font-size: 15px;
+            color: #1c2a45;
+            font-weight: 500
+        }
+
+        .pc li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #00b341;
+            color: #fff;
+            font-size: 11px;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 2px 3px #0003
+        }
+
+        .pc .tg {
+            position: absolute;
+            top: 36px;
+            right: -58px;
+            width: 210px;
+            text-align: center;
+            transform: rotate(45deg);
+            background: linear-gradient(#f2404c, #b3121c);
+            color: #fff;
+            font-size: 10.5px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            padding: 7px 0;
+            box-shadow: 0 4px 8px #0005;
+            z-index: 2
+        }
+
+        .pc .sel {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 13px;
+            border-radius: 99px;
+            background: linear-gradient(#2aa0ff, #0072e6);
+            color: #fff;
+            font-weight: 800;
+            box-shadow: 0 4px 0 #0057b3, 0 12px 20px #0084ff44
+        }
+
+        .pkg .pc.g .sel {
+            background: linear-gradient(#3a2a00, #1d1400);
+            box-shadow: 0 4px 0 #000, 0 12px 20px #0004;
+            color: #ffe08a
+        }
+
+        .pkg .pc:nth-child(2) .sel {
+            background: linear-gradient(#26324f, #0f1830);
+            box-shadow: 0 4px 0 #050b1a, 0 12px 20px #0f183044
+        }
+
+        .pc[aria-pressed=true] .sel {
+            background: linear-gradient(#27c95e, #0a9a40) !important;
+            color: #fff !important;
+            box-shadow: 0 4px 0 #067a32, 0 12px 20px #00b34144 !important
+        }
+
+        .stp {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin: 20px 0 28px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--mut)
+        }
+
+        .stp span {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .stp b {
+            display: grid;
+            place-items: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--line);
+            color: var(--ink)
+        }
+
+        .stp .on {
+            color: var(--ink)
+        }
+
+        .stp .on b {
+            background: var(--b);
+            color: #fff
+        }
+
+        .stp .dn b {
+            background: var(--ok);
+            color: #fff
+        }
+
+        .stp hr {
+            flex: 0 0 36px;
+            border: 0;
+            border-top: 2px solid var(--line);
+            margin: 0
+        }
+
+        .co {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 30px;
+            align-items: start
+        }
+
+        .cd {
+            background: var(--sf);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 30px
+        }
+
+        .cd h3 {
+            font-size: 22px;
+            margin-bottom: 16px
+        }
+
+        .cd label.f {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 0 0 6px
+        }
+
+        .fe {
+            color: var(--bad);
+            font-size: 14px;
+            min-height: 20px;
+            margin: 6px 0 10px
+        }
+
+        .cd ul.fl2 {
+            list-style: none;
+            margin: 14px 0;
+            padding: 0;
+            color: var(--mut);
+            font-size: 14px
+        }
+
+        .cd ul.fl2 li {
+            padding: 3px 0 3px 22px;
+            position: relative
+        }
+
+        .cd ul.fl2 li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--ok);
+            font-weight: 800
+        }
+
+        .pm {
+            display: grid;
+            gap: 10px;
+            margin: 14px 0
+        }
+
+        .pm label {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            border: 1.5px solid var(--line);
+            border-radius: 12px;
+            padding: 14px 16px;
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        .pm label:has(input:checked) {
+            border-color: var(--b);
+            background: var(--lb)
+        }
+
+        .pm input {
+            accent-color: #0084ff
+        }
+
+        .mnt {
+            border: 1.5px dashed var(--line);
+            border-radius: 12px;
+            padding: 22px;
+            color: var(--mut);
+            font-size: 14px;
+            text-align: center;
+            min-height: 110px;
+            display: grid;
+            place-items: center
+        }
+
+        .sum .li {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-top: 1px solid var(--line)
+        }
+
+        .sum .li.t {
+            font-size: 22px;
+            font-weight: 800
+        }
+
+        .rn {
+            margin: 20px 0 0;
+            padding: 14px 16px;
+            border: 1.5px solid var(--line);
+            border-left: 4px solid var(--o);
+            border-radius: 12px;
+            background: var(--lb);
+            font-size: 14px;
+            line-height: 1.5
+        }
+
+        .rn b {
+            display: block;
+            margin-bottom: 4px
+        }
+
+        .rn p {
+            margin: 0;
+            color: var(--mut)
+        }
+
+        .rn a {
+            color: var(--b);
+            font-weight: 600
+        }
+
+        dialog.pol {
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: var(--sf);
+            color: var(--ink);
+            width: min(680px, calc(100% - 32px));
+            max-height: 86vh;
+            padding: 0;
+            overflow: hidden
+        }
+
+        dialog.pol::backdrop {
+            background: #0f183099
+        }
+
+        dialog.pol .ph {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 26px;
+            border-bottom: 1px solid var(--line)
+        }
+
+        dialog.pol h3 {
+            margin: 0;
+            font-size: 22px
+        }
+
+        dialog.pol .px {
+            background: none;
+            border: 0;
+            font-size: 28px;
+            line-height: 1;
+            color: var(--mut);
+            cursor: pointer
+        }
+
+        dialog.pol .pb {
+            padding: 20px 26px 26px;
+            overflow-y: auto;
+            max-height: calc(86vh - 78px);
+            font-size: 15px;
+            line-height: 1.6
+        }
+
+        dialog.pol .pb h4 {
+            margin: 18px 0 6px;
+            font-size: 16px
+        }
+
+        dialog.pol .pb p,
+        dialog.pol .pb li {
+            color: var(--mut);
+            margin: 0 0 8px
+        }
+
+        dialog.pol .pb ul {
+            margin: 0 0 8px;
+            padding-left: 20px
+        }
+
+        dialog.pol .pb ol {
+            margin: 0 0 10px;
+            padding-left: 22px
+        }
+
+        dialog.pol .pb a {
+            color: var(--b);
+            font-weight: 600
+        }
+
+        dialog.pol .pb a.rq {
+            display: inline-block;
+            margin: 6px 0 4px;
+            padding: 11px 20px;
+            border-radius: 99px;
+            background: var(--b);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 700
+        }
+
+        dialog.pol .pb small {
+            display: block;
+            margin-top: 16px;
+            color: var(--mut)
+        }
+
+        .rfr {
+            border: 1.5px solid var(--ok);
+            border-radius: 14px;
+            background: var(--lb);
+            padding: 20px 22px;
+            line-height: 1.6
+        }
+
+        .rfr b.t {
+            display: block;
+            font-size: 19px;
+            margin-bottom: 6px
+        }
+
+        .rfr ul {
+            margin: 10px 0 0;
+            padding-left: 20px;
+            color: var(--mut)
+        }
+
+        .lg {
+            position: relative
+        }
+
+        .lg>button {
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .lg svg.f {
+            width: 24px;
+            height: 16px;
+            border-radius: 3px;
+            box-shadow: 0 0 0 1px #0003;
+            flex: none
+        }
+
+        .lg ul {
+            position: absolute;
+            right: 0;
+            top: calc(100% + 8px);
+            min-width: 230px;
+            max-height: 70vh;
+            overflow: auto;
+            margin: 0;
+            padding: 6px;
+            list-style: none;
+            background: var(--sf);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            box-shadow: 0 14px 40px #0f183026;
+            display: none;
+            z-index: 50
+        }
+
+        .lg.o ul {
+            display: block
+        }
+
+        .lg li {
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px;
+            border-radius: 99px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--ink)
+        }
+
+        .lg li:hover,
+        .lg li:focus,
+        .lg li[aria-selected=true] {
+            background: var(--lb);
+            outline: none
+        }
+
+        select.pill {
+            background: var(--bg);
+            -webkit-appearance: none;
+            appearance: none;
+            padding: 10px 18px;
+            font: 600 15px Inter, sans-serif
+        }
+
+        select.pill option {
+            color: #0f1830;
+            background: #fff
+        }
+
+        @media(max-width:900px) {
+
+            .hero .w,
+            .vid,
+            .pane,
+            .cta1,
+            #res .g,
+            .st,
+            .co,
+            .pkg {
+                grid-template-columns: 1fr
+            }
+
+            .scene {
+                height: 380px
+            }
+
+            header nav {
+                display: none
+            }
+
+            .stats,
+            .ftabs,
+            .mk,
+            .fc {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .bl,
+            .cmp {
+                grid-template-columns: 1fr
+            }
+
+            .cta1 {
+                padding: 30px
+            }
+
+            #rl {
+                padding: 28px 20px
+            }
+
+            .src,
+            .trust {
+                grid-template-columns: 1fr
+            }
+
+            .ck {
+                max-width: calc(100% - 20px)
+            }
+
+            .pkg .pc:hover {
+                transform: none
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                scroll-behavior: auto !important;
+                transition: none !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#fff" />
+                <stop offset="1" stop-color="#b8c4d4" />
+            </linearGradient>
+            <symbol id="car" viewBox="0 0 520 190">
+                <ellipse cx="262" cy="183" rx="236" ry="8" fill="#0f1830" opacity=".2" />
+                <path
+                    d="M18 140Q28 108 92 102L152 66Q205 44 285 46Q356 48 396 84L452 94Q502 102 502 140L482 152H442a37 37 0 0 0-74 0H172a37 37 0 0 0-74 0H38Z"
+                    fill="url(#cb)" stroke="#7d0c10" stroke-width="1.5" />
+                <path d="M30 128Q40 118 92 114H452Q496 116 500 138L482 152H38Z" fill="#000" opacity=".14" />
+                <path d="M160 76Q205 54 280 56Q338 58 368 88H150Z" fill="url(#cw)" stroke="#7d0c10" stroke-width="2" />
+                <path d="M262 57V88" stroke="#7d0c10" stroke-width="5" />
+                <path d="M178 75Q208 62 250 60L236 86H162Z" fill="#fff" opacity=".4" />
+                <path d="M152 68Q205 46 285 48Q352 50 392 84" fill="none" stroke="#ffb3b6" stroke-width="3"
+                    opacity=".8" />
+                <path d="M246 92V142M362 92V142" stroke="#7d0c10" stroke-width="2" opacity=".5" />
+                <rect x="214" y="100" width="26" height="5" rx="2.5" fill="#7d0c10" opacity=".6" />
+                <rect x="372" y="100" width="26" height="5" rx="2.5" fill="#7d0c10" opacity=".6" />
+                <path d="M455 102h32l8 12h-40z" fill="#fff8d6" />
+                <path d="M487 104l30 8v6l-30-4z" fill="#fff8d6" opacity=".35" />
+                <path d="M22 110h22v16H22z" fill="#ff2d3a" />
+                <path d="M18 134h476" stroke="#fff" stroke-width="1.5" opacity=".25" />
+                <use href="#wh" x="135" y="152" />
+                <use href="#wh" x="405" y="152" />
+            </symbol>
+            <symbol id="sh" viewBox="0 0 32 32">
+                <path d="M16 2l12 5v8c0 8-5 13-12 15C9 28 4 23 4 15V7z" fill="#0084ff" />
+                <path d="M10 15l4 4 8-9" fill="none" stroke="#ffb300" stroke-width="3.5" stroke-linecap="round" />
+            </symbol>
+            <linearGradient id="cb" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ff7378" />
+                <stop offset=".45" stop-color="#dc2530" />
+                <stop offset="1" stop-color="#8f0d12" />
+            </linearGradient>
+            <linearGradient id="cw" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#e3f2ff" />
+                <stop offset="1" stop-color="#4f7fae" />
+            </linearGradient>
+            <radialGradient id="rg">
+                <stop offset="0" stop-color="#fff" />
+                <stop offset="1" stop-color="#a5b0c0" />
+            </radialGradient>
+            <g id="wh">
+                <circle r="36" fill="#0e1015" />
+                <circle r="25" fill="url(#rg)" />
+                <path d="M0-23V23M-20-11.5L20 11.5M-20 11.5L20-11.5" stroke="#6b7686" stroke-width="3.5" />
+                <circle r="7" fill="#5a6475" />
+            </g>
+        </defs>
+    </svg>
+
+    <header>
+        <div class="w">
+            <a class="logo" href="#" data-home><svg viewBox="0 0 32 32">
+                    <use href="#sh" />
+                </svg>Vin<b>Apex</b></a>
+            <nav><a href="#" data-home>🏠</a><a href="#hist">Sample Report</a><a href="#hist">VIN Decoder</a><a
+                    href="#plate">License Plate Lookup</a><a href="#price">Price</a></nav>
+            <div class="lg" id="lgbox"><button class="pill" id="lgbtn" type="button" aria-haspopup="listbox"
+                    aria-expanded="false" aria-label="Language"></button>
+                <ul id="lgul" role="listbox" aria-label="Language"></ul>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="land">
+            <section class="hero">
+                <div class="w">
+                    <div class="scene" id="scene">
+                        <div class="phone3d" id="ph">
+                            <div class="scr"><i class="isl"></i>
+                                <div class="sb"><span>9:41</span><span class="si"><svg width="16" height="10">
+                                            <path d="M1 8h2v2H1zM5 6h2v4H5zM9 3h2v7H9zM13 0h2v10h-2z" fill="#0f1830" />
+                                        </svg><svg width="15" height="11" viewBox="0 0 15 11">
+                                            <path
+                                                d="M7.5 10.5a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6zM3.6 6.2a5.5 5.5 0 0 1 7.8 0l-1.1 1.1a4 4 0 0 0-5.6 0zM1 3.6a9.2 9.2 0 0 1 13 0l-1.1 1.1a7.6 7.6 0 0 0-10.8 0z"
+                                                fill="#0f1830" />
+                                        </svg><svg width="24" height="11">
+                                            <rect x=".5" y=".5" width="20" height="10" rx="3" fill="none"
+                                                stroke="#0f1830" opacity=".45" />
+                                            <rect x="2" y="2" width="15" height="7" rx="1.8" fill="#0f1830" />
+                                            <path d="M22 4v3" stroke="#0f1830" opacity=".5" stroke-width="1.5" />
+                                        </svg></span></div>
+                                <div class="ah"><svg viewBox="0 0 32 32" width="20" height="20">
+                                        <use href="#sh" />
+                                    </svg><b>Vin<span>Apex</span></b></div>
+                                <div class="vt"><small>VEHICLE HISTORY REPORT</small>
+                                    <h5>2016 Audi A3 S line</h5><span>VIN WAUZZZ8V5GA······</span>
+                                </div>
+                                <div class="crash"><svg viewBox="0 0 250 130">
+                                        <use href="#car" x="8" y="22" width="234" height="88" />
+                                        <circle cx="222" cy="20" r="11" fill="#e5484d" /><text x="222" y="25"
+                                            text-anchor="middle" font-size="14" font-weight="800" fill="#fff">!</text>
+                                    </svg></div>
+                                <div class="rows">
+                                    <div class="ir"><span>Odometer</span><b class="a">1 problem</b></div>
+                                    <div class="ir"><span>Safety recalls</span><b class="a">3 records</b></div>
+                                    <div class="ir"><span>Accidents</span><b class="r">2 found</b></div>
+                                    <div class="ir"><span>Mileage</span><b class="g">44,915 mi</b></div>
+                                    <div class="ir"><span>Auction sales</span><b class="a">2 found</b></div>
+                                </div>
+                                <div class="cta">View full report</div><i class="hb"></i>
+                            </div>
+                        </div>
+                        <svg class="car3d" id="cr" viewBox="0 0 520 190">
+                            <use href="#car" />
+                        </svg>
+                        <div class="fl" style="right:6%;top:30px">⚠ 2 accidents found</div>
+                        <div class="fl" style="left:0;bottom:40px;color:#00a63e">✓ Mileage verified</div>
+                    </div>
+                    <div id="plate">
+                        <h6>Are you worried about buying a used car?</h6>
+                        <h1>VIN Check Can Save You Thousands — Get a Full Vehicle History Report</h1>
+                        <p class="sub">Free VIN check - find any vehicle by VIN</p>
+                        <div class="tb" role="tablist"><button role="tab" aria-selected="true" data-t="vin">by
+                                VIN</button><button role="tab" aria-selected="false" data-t="plate">by License
+                                Plate</button></div>
+                        <div class="vb"><input class="vin" maxlength="17" autocomplete="off" spellcheck="false"
+                                placeholder="Enter VIN Number" aria-label="VIN"><button class="btn go"
+                                type="button">Check VIN ›</button></div>
+                        <p class="er"></p>
+                        <div class="lk"><span><a href="#where">Where</a> to find the VIN?</span><span>•</span><span>No
+                                VIN? <a href="#" class="sm">Try a sample VIN</a></span></div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="w">
+                <div class="trust">
+                    <div style="display:flex;gap:14px;align-items:center">
+                        <div class="av"><i></i><i></i><i></i></div><span
+                            style="color:var(--mut);font-size:14px;max-width:24ch">Built for used-car buyers
+                            everywhere</span>
+                    </div>
+                    <div
+                        style="display:flex;gap:36px;flex-wrap:wrap;color:var(--mut);font-weight:800;font-size:22px;justify-content:flex-end">
+                        <span>TITLE</span><span>RECALLS</span><span>SALVAGE</span><span>THEFT</span><span>ODOMETER</span>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div><span>Free VIN Check:</span><b>By VIN & Plate</b></div>
+                    <div><span>Daily VIN Searches:</span><b>Fast & Free</b></div>
+                    <div><span>VIN Checked On:</span><b>Many Databases</b></div>
+                    <div><span>Full Vehicle History Report:</span><b>Extensive History</b></div>
+                </div>
+            </div>
+
+            <section class="sec">
+                <div class="w vid">
+                    <div>
+                        <h2>How to Use VinApex in 20 Seconds</h2>
+                        <p>Watch the 20-second walkthrough: enter the VIN, run the check, choose your report, then pay
+                            securely and open it online.</p>
+                        <a class="btn ol" href="#top" data-top>Check Your VIN for $25 ›</a>
+                    </div>
+                    <div class="vp" id="vid"></div>
+                </div>
+            </section>
+
+            <section class="sec" id="hist" style="background:linear-gradient(var(--bg),var(--lb) 40%);padding-top:30px">
+                <div class="w">
+                    <div class="cen">
+                        <h2>Always Check the History of a Car Before Buying It</h2>
+                        <p>Every VinApex Vehicle History Report turns one vehicle identification number into a detailed
+                            vehicle history check: title records, accident history, odometer readings and every owner on
+                            record</p>
+                    </div>
+                    <div class="ftabs" id="ft" role="tablist"></div>
+                    <div class="pane" id="fp"></div>
+                    <div class="src">
+                        <div>
+                            <h4>🛡 Where our data comes from</h4>
+                            <p>VinApex reports are built from title, salvage, recall and listing records supplied by
+                                data partners. Replace this text with your real data-provider details before launch.</p>
+                        </div>
+                        <div class="sh">DATA</div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="sec">
+                <div class="w">
+                    <div class="cen">
+                        <h2>What a Free VIN Check Covers and What the Full Report Adds</h2>
+                    </div>
+                    <div class="cmp" id="cmp"></div>
+                    <div class="cen">
+                        <p style="font-size:16px;color:var(--ink)"><b>Enter all 17 characters above to run the
+                                check,</b> then pull the full report the moment a count is not zero.</p>
+                        <a class="btn ol" href="#top" data-top style="margin-top:22px">Check Your VIN for $25 ›</a>
+                    </div>
+                </div>
+            </section>
+
+            <div class="w">
+                <div class="num">
+                    <div>
+                        <div class="t">👍 98%</div><span>Satisfaction rate</span>
+                    </div>
+                    <div>
+                        <div class="t">✉ 10 minutes</div><span>Avg. response time</span>
+                    </div>
+                    <div>
+                        <div class="t">🕒 24/7</div><span>Chat availability</span>
+                    </div>
+                </div>
+            </div>
+
+            <section class="sec" id="price">
+                <div class="w">
+                    <div class="cta1">
+                        <div>
+                            <h2><span style="color:var(--b)">Starting from</span> <span class="d">$25</span><br>to check
+                                your car’s real history</h2>
+                            <p>A car can look perfect and still hide an old accident, a rolled-back odometer or a
+                                salvage title. You won’t spot it on a test drive, but you’ll feel it later in repair
+                                bills and regret. The smart move is simple: check the report before you buy, not after.
+                            </p>
+                            <div class="vb" style="max-width:480px"><input class="vin" maxlength="17"
+                                    placeholder="Enter your VIN number" aria-label="VIN"><button class="btn go"
+                                    type="button">Check your Car ›</button></div>
+                            <p class="er" style="margin:6px"></p><small style="color:var(--mut)">Enter your VIN to see
+                                your report options.</small>
+                        </div>
+                        <div class="scene" style="height:260px;perspective:900px"><svg viewBox="0 0 520 190"
+                                style="width:90%;position:absolute;right:0;bottom:0;transform:rotateY(-12deg);filter:drop-shadow(24px 26px 16px #0004)">
+                                <use href="#car" />
+                            </svg></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="sec" style="padding-top:0">
+                <div class="w">
+                    <div class="cen">
+                        <h2>Check a VIN by Make</h2>
+                    </div>
+                    <div class="mk" id="mk"></div>
+                </div>
+            </section>
+
+            <section class="sec" style="padding-top:20px">
+                <div class="w">
+                    <div class="cen">
+                        <h2>Auto Insights Blog</h2>
+                        <p>Discover expert tips, news and advice on buying and maintaining used vehicles</p>
+                    </div>
+                    <div class="bl" id="bl"></div>
+                    <div class="cen" style="margin-top:34px"><a class="btn ol" href="#">View All ›</a></div>
+                </div>
+            </section>
+
+            <section class="sec" id="where" style="padding-top:20px">
+                <div class="w">
+                    <div class="cen">
+                        <h2>Frequently Asked Questions</h2>
+                    </div>
+                    <div class="faq" id="faq"></div>
+                    <div class="rate">
+                        <p style="margin:0"><b class="g">98% of users</b> <b>recommend our service.</b></p>
+                        <p style="color:var(--mut);margin:6px 0">4.50 out of 5 (sample)</p>
+                        <div class="stars" id="stars"></div><small style="color:var(--mut)">Choose a star to
+                            rate</small>
+                    </div>
+                </div>
+            </section>
+
+            <section class="save">
+                <div class="w">
+                    <h2 style="font-size:44px">Save Thousands of Dollars</h2>
+                    <p style="color:var(--mut);font-size:19px;margin:10px 0 0">Learn everything there is to know about
+                        your next car.</p>
+                    <div class="tb"><button aria-selected="true" data-t="vin">by VIN</button><button
+                            aria-selected="false" data-t="plate">by US License Plate</button></div>
+                    <div class="vb"><input class="vin" maxlength="17" placeholder="Enter VIN Number"
+                            aria-label="VIN"><button class="btn go" type="button">Check VIN ›</button></div>
+                    <p class="er"></p>
+                </div>
+            </section>
+
+            <footer>
+                <div class="w">
+                    <div class="st">
+                        <div>
+                            <h4>License Plate Lookup by State</h4>
+                            <div id="s1"></div>
+                        </div>
+                        <div>
+                            <h4>VIN Check by State</h4>
+                            <div id="s2"></div>
+                        </div>
+                    </div>
+                    <div class="fc" id="fc"></div>
+                    <div class="disc"><b>Disclaimer.</b> VinApex reports are digital products compiled from third-party
+                        data sources and delivered online immediately after payment. Records may be incomplete and a
+                        report is not a substitute for an inspection by a qualified mechanic. Because the full report is
+                        available the moment it is delivered, <b>all sales are final once a report has been
+                            delivered</b>, including when the vehicle has since been bought, sold or traded. We refund
+                        in full if a report cannot be generated or delivered, or if you were charged twice. By
+                        purchasing you confirm that you are the authorized holder of the payment method and that you
+                        received the report. We keep records of your order, your acceptance of our terms, and delivery
+                        of and access to your report, and may share them with payment providers if a payment is
+                        disputed. <a href="#" data-policy>Read the full Refund Policy</a>.</div>
+                    <div class="copy">© 2026 VinApex Vehicle History Reports. Prototype interface, sample data shown.
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        <section id="res">
+            <div class="g">
+                <div id="rl"></div>
+                <aside id="rr" style="display:none"></aside>
+            </div>
+        </section>
+    </main>
+
+    <dialog class="pol" id="pol" aria-labelledby="pol-t">
+        <div class="ph">
+            <h3 id="pol-t">Refund &amp; Digital Delivery Policy</h3>
+            <button class="px" id="polx" type="button" aria-label="Close">×</button>
+        </div>
+        <div class="pb">
+            <p style="margin-bottom:0"><a href="#" data-jump="pol-process">Need a refund? Jump to how to request one
+                    ↓</a></p>
+            <h4>1. Instant digital product</h4>
+            <p>A VinApex report is a digital product. It is generated from the VIN you enter and delivered online (and
+                to your email) immediately after payment. You can open it as soon as your payment completes.</p>
+            <h4>2. All sales are final once delivered</h4>
+            <p>The full content of a report is available the moment it is delivered and cannot be returned. For that
+                reason we do not offer refunds once a report has been delivered or opened.</p>
+            <h4>3. When we do refund you in full</h4>
+            <ul>
+                <li>The report could not be generated or delivered.</li>
+                <li>You were charged more than once for the same order.</li>
+                <li>The report was generated for a different VIN than the one you entered.</li>
+            </ul>
+            <h4 id="pol-process">6. How to request a refund</h4>
+            <p>If your order qualifies under section 3, please contact support within 7 days.</p>
+            <a class="rq" href="#" data-refund>Request a refund</a>
+            <small>Last updated October 31, 2026.</small>
+        </div>
+    </dialog>
+
+    <div class="ck" id="ck"><span><b>We use cookies.</b> If you continue to browse it means you agree to the use of
+            cookies.</span><button id="ckx" aria-label="Close">×</button></div>
+    <button class="chat" aria-label="Chat"></button>
+    <div class="toast" id="toast" role="status"></div>
+
+    <script>
+        (function () {
+            var $ = function (i) {return document.getElementById(i)}, Q = function (s) {return [].slice.call(document.querySelectorAll(s))};
+            function toast(m) {var t = $('toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(function () {t.style.display = 'none'}, 3800)}
+
+            var F = [
+                ['Odometer Check', '📊', 'Every odometer reading with its date, in order, so a drop between two dates stands out.', [['Mar 2019', '41,200 mi', 'ok'], ['Jun 2021', '68,900 mi', 'ok'], ['Feb 2023', '52,300 mi', 'wn'], ['Sep 2025', '94,100 mi', 'ok']]],
+                ['Ownership History', '👥', 'Owners by state and period, plus prior use as a rental, taxi or fleet car.', [['Owner 1', 'Texas, 2016–2019', ''], ['Owner 2', 'Ohio, 2019–2023', ''], ['Prior use', 'Rental fleet', 'wn']]],
+                ['Photos on Sale', '📷', 'Photos of Previous Sales - Has this vehicle previously been listed for sale?', [['Listed for sale', 'Feb 3, 2018', ''], ['Price', '$17,000', ''], ['Photos', '12 on file', 'ok']]],
+                ['Damage Check', '🔧', 'Damage records with photos, impact area and estimated repair cost.', [['Impact', 'Left front', 'wn'], ['Est. repair cost', '$6,400', 'wn'], ['Airbags', 'Not deployed', 'ok']]],
+                ['Technical Data', '⚙️', 'Complete technical data for the exact vehicle: engine, drive, dimensions and more.', [['Engine', '2.0 L turbo', ''], ['Drive', 'Front-wheel', ''], ['Battery warranty', '96 months', '']]],
+                ['Stolen VIN Check', '🔒', 'Theft and lien records, checked against national sources.', [['Theft record', 'None found', 'ok'], ['Lien record', 'None found', 'ok']]]
+            ];
+
+            var ft = $('ft');
+            function pane(i) {
+                Q('#ft button').forEach(function (b, k) {b.setAttribute('aria-selected', k === i)});
+                var f = F[i];
+                $('fp').innerHTML = '<div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><b style="font-size:17px">' + f[0] + '</b><div style="height:8px"></div>' + f[3].map(function (r) {return '<div class="li"><span style="color:var(--mut)">' + r[0] + '</span><span class="' + r[2] + '"><b>' + r[1] + '</b></span></div>'}).join('') + '</div></div><div><div class="ic">' + f[1] + '</div><h3>' + f[2] + '</h3><a class="btn bl" href="#top" data-top>Check Your Car ›</a></div>'
+            }
+            F.forEach(function (f, i) {var b = document.createElement('button'); b.textContent = f[0]; b.setAttribute('role', 'tab'); b.onclick = function () {pane(i)}; ft.appendChild(b)});
+            pane(2);
+
+            var C = [
+                ['Year, make, model, engine, fuel type and where the car was made', 'Complete technical data for the exact vehicle'],
+                ['Open safety recalls', 'Each recall in detail'],
+                ['Odometer status and last mileage recorded', 'Every odometer reading with its date, in order'],
+                ['Accident count: how many damage records exist', 'Salvage history with photos and the damage estimate'],
+                ['Sales count: how many times it was listed', 'Every listing with photos, asking price and date'],
+                ['Number of owners on file', 'Owners by state and period, plus prior fleet use'],
+                ['A pass through our data sources', 'Title records, theft records, liens and total loss records']
+            ];
+            $('cmp').innerHTML = '<div class="h">📅 Free VIN check shows</div><div class="h p">✨ The full VinApex report adds</div>' + C.map(function (r) {return '<div class="c">' + r[0] + '</div><div class="c p">' + r[1] + '</div>'}).join('');
+
+            var M = {A: ['Acura', 'Alfa Romeo', 'Audi'], B: ['Bentley', 'BMW', 'Buick'], C: ['Cadillac', 'Chevrolet', 'Chrysler'], D: ['Dodge'], F: ['Ferrari', 'Fiat', 'Ford'], G: ['GMC', 'Genesis'], H: ['Honda', 'Hyundai'], J: ['Jaguar', 'Jeep'], K: ['Kia'], L: ['Land Rover', 'Lexus'], M: ['Mazda', 'Mercedes-Benz', 'Mini'], N: ['Nissan'], P: ['Porsche'], R: ['Ram', 'Rivian'], S: ['Subaru', 'Suzuki'], T: ['Tesla', 'Toyota'], V: ['Volkswagen', 'Volvo']};
+            $('mk').innerHTML = Object.keys(M).map(function (k) {return '<div><b>' + k + '</b>' + M[k].map(function (m) {return '<a href="#top" data-top>' + m + '</a>'}).join('') + '</div>'}).join('');
+
+            var BL = [['⛽', '#ffe9c7', 'Maintenance and Safety', '10 min read', 'Bad Gas in a Car: How Serious Is It?', 'Bad fuel can quickly turn into expensive car trouble. Here’s what happens when…'], ['🎓', '#d9ecff', 'Car Buying Guides', '9 min read', 'How to Buy a Car as a Student on a Budget', 'College students face high prices, low credit and zero room for mistakes when…'], ['📝', '#e2f5e6', 'Car Buying Guides', '9 min read', 'Can You Buy a Car Without a License?', 'Many people buy cars before they ever get a license. If you’re planning to do…']];
+            $('bl').innerHTML = BL.map(function (b) {return '<div><div class="im" style="background:' + b[1] + '">' + b[0] + '</div><span class="tag">' + b[2] + '</span><small style="color:var(--mut)">⏱ ' + b[3] + '</small><h4 style="margin-top:8px">' + b[4] + '</h4><p>' + b[5] + '</p><a href="#">Read more ›</a></div>'}).join('');
+
+            var Fq = [['What is a VinApex Vehicle History Report?', 'A report that turns one VIN into title, accident, odometer, recall, sales and owner records for that exact vehicle.'], ['For whom do we provide Vehicle History Reports?', 'Used-car buyers, sellers, dealers and anyone who wants to verify a vehicle before a deal.'], ['Do reports have information on every vehicle?', 'No report can cover every vehicle. When there isn’t enough data, we tell you and let you leave an email.'], ['What is a VIN?', 'A 17-character code that identifies one specific vehicle. It never contains the letters I, O or Q.'], ['Where can I find my VIN number?', 'At the driver-side base of the windshield, on the driver’s door jamb sticker, and on registration or insurance papers.']];
+            $('faq').innerHTML = Fq.map(function (q) {return '<details><summary>' + q[0] + '</summary><p>' + q[1] + '</p></details>'}).join('');
+
+            $('stars').innerHTML = [1, 2, 3, 4, 5].map(function (n) {return '<button aria-label="' + n + ' stars">★</button>'}).join('');
+            Q('#stars button').forEach(function (b, i) {b.onclick = function () {toast('Thanks! You rated ' + (i + 1) + ' of 5 (demo).')}});
+
+            var S = ['California', 'New York', 'Florida', 'Ohio', 'Michigan', 'Indiana', 'Washington', 'Minnesota', 'Maryland', 'Colorado', 'Tennessee'], S2 = ['California', 'Florida', 'Texas', 'Georgia', 'Michigan', 'Minnesota', 'New York', 'New Jersey', 'Virginia', 'South Carolina', 'Missouri'];
+            $('s1').innerHTML = S.map(function (s) {return '<a href="#plate">' + s + '</a>'}).join('');
+            $('s2').innerHTML = S2.map(function (s) {return '<a href="#top" data-top>' + s + '</a>'}).join('');
+
+            var FC = [['Customer Service', ['Mon–Fri support (demo)', 'Chat available 24/7']], ['About VinApex', ['About Us', 'Data Sources', 'Contact Us', 'Reviews', 'Blog', 'Affiliate Program']], ['Support', ['Glossary', 'FAQ', 'Refund Policy', 'Privacy Policy', 'Terms & Conditions']], ['VIN Decoder', ['Window Sticker', 'Motorcycle VIN Check', 'RV VIN Lookup', 'VIN Check by State', 'Sample Report']], ['Vehicle History Report', ['License Plate Lookup', 'Free Title Check', 'Flood Damage Check', 'Free Odometer Check', 'Salvage Title Check', 'Stolen Vehicle Check']]];
+            $('fc').innerHTML = FC.map(function (c) {return '<div><h4>' + c[0] + '</h4>' + c[1].map(function (l) {return '<a href="#"' + (l === 'Refund Policy' ? ' data-policy' : '') + '>' + l + '</a>'}).join('') + '</div>'}).join('');
+
+            var pol = $('pol');
+            document.addEventListener('click', function (e) {var a = e.target.closest('[data-policy]'); if (a) {e.preventDefault(); if (pol.showModal) pol.showModal(); else pol.setAttribute('open', '')} });
+            $('polx').onclick = function () {pol.close()};
+            pol.addEventListener('click', function (e) {
+                var j = e.target.closest('[data-jump]');
+                if (j) {
+                    e.preventDefault();
+                    var t = $(j.dataset.jump);
+                    if (t) {
+                        var pb = pol.querySelector('.pb');
+                        pb.scrollTop = t.offsetTop - pb.offsetTop;
+                    }
+                }
+            });
+            pol.addEventListener('click', function (e) {if (e.target === pol) pol.close()});
+
+            Q('[data-home]').forEach(function (a) {a.onclick = function (e) {e.preventDefault(); home()}});
+            Q('[data-top]').forEach(function (a) {a.onclick = function (e) {e.preventDefault(); home(); Q('.vin')[0].focus(); scrollTo(0, 0)}});
+
+            $('ckx').onclick = function () {$('ck').style.display = 'none'};
+            Q('.tb button').forEach(function (b) {
+                b.onclick = function () {
+                    var p = b.parentNode;
+                    [].forEach.call(p.children, function (x) {x.setAttribute('aria-selected', x === b)});
+                    var e = p.parentNode.querySelector('.er');
+                    if (b.dataset.t === 'plate') {e.style.color = '#4da3ff'; e.textContent = 'Plate lookup needs a data provider. Use a VIN for now.'} else e.textContent = ''
+                }
+            });
+
+            Q('.vin').forEach(function (v) {
+                v.oninput = function () {v.value = v.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); Q('.er').forEach(function (e) {e.textContent = ''})};
+                v.onkeydown = function (e) {if (e.key === 'Enter') run(v)}
+            });
+            Q('.go').forEach(function (b) {b.onclick = function () {run(b.parentNode.querySelector('.vin'))}});
+            Q('.sm').forEach(function (a) {a.onclick = function (e) {e.preventDefault(); var v = Q('.vin')[0]; v.value = '1HGCM82633A004352'; run(v)}});
+
+            function home() {$('res').style.display = 'none'; $('land').style.display = 'block'; scrollTo(0, 0)}
+
+            var sc = $('scene'), ph = $('ph'), cr = $('cr');
+            if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                sc.onmousemove = function (e) {
+                    var r = sc.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+                    ph.style.transform = 'rotateY(' + (-18 + x * 14) + 'deg) rotateX(' + (5 - y * 10) + 'deg)';
+                    cr.style.transform = 'rotateY(' + (14 + x * 12) + 'deg) rotateX(' + (-y * 6) + 'deg)'
+                }
+            }
+
+            var TR = {A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, J: 1, K: 2, L: 3, M: 4, N: 5, P: 7, R: 9, S: 2, T: 3, U: 4, V: 5, W: 6, X: 7, Y: 8, Z: 9}, WT = [8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2], YR = 'ABCDEFGHJKLMNPRSTVWXY123456789';
+            function cd(v) {var s = 0; for (var i = 0; i < 17; i++)s += (/\d/.test(v[i]) ? +v[i] : TR[v[i]]) * WT[i]; var r = s % 11; return r === 10 ? 'X' : '' + r}
+            function yr(v) {var k = YR.indexOf(v[9]); return k < 0 ? null : (/[A-Z]/.test(v[6]) ? 2010 : 1980) + k}
+            function rg(c) {return '12345'.indexOf(c) > -1 ? (c === '2' ? 'Canada' : c === '3' ? 'Mexico' : 'United States') : ({J: 'Japan', K: 'South Korea', L: 'China', S: 'United Kingdom', V: 'France / Spain', W: 'Germany', Z: 'Italy'})[c] || 'Other region'}
+
+            function run(inp) {
+                var v = inp.value, e = inp.parentNode.parentNode.querySelector('.er'); e.style.color = '';
+                if (v.length !== 17) {e.textContent = 'A VIN has 17 characters. You entered ' + v.length + '.'; return }
+                if (/[IOQ]/.test(v)) {e.textContent = 'VINs never contain I, O or Q. Check for 1 or 0 instead.'; return }
+                $('land').style.display = 'none'; $('res').style.display = 'block'; scrollTo(0, 0);
+                $('rl').innerHTML = '<h2 style="font-size:34px">Checking ' + v + '…</h2><p style="color:var(--mut)">Searching databases, this takes a moment.</p>';
+                setTimeout(function () {renderPackagesUI(v)}, 1000)
+            }
+
+            var PK = [
+                {n: 'Basic', p: 25, d: 'Know the essentials about your car', f: ['Full VIN decode: year, make, model, engine, trim', 'Factory specs and equipment list', 'Open safety recalls', 'Odometer status and rollback flag', 'Accident record count', 'Number of previous owners', 'Sales listing count', 'Title brand summary', 'Instant online report']},
+                {n: 'Silver', p: 55, tag: 'Most popular', d: 'The full history behind the sale', f: ['Everything in Basic', 'Complete odometer history with dates', 'Detailed damage records and impact area', 'Damage photos', 'Ownership history by state and period', 'Prior use: rental, taxi or fleet', 'Past listings with price and photos', 'Flood and fire damage check', 'Lemon and buyback history', 'Mileage compared with similar cars']},
+                {n: 'Gold', p: 75, tag: 'Best value', g: 1, d: 'Total peace of mind, nothing held back', f: ['Everything in Silver', 'Salvage and auction photos with repair estimates', 'Theft record and active lien check', 'Total loss and insurance claim records', 'Airbag deployment records', 'Recall details with repair status', 'Estimated market value', 'Estimated cost of ownership', 'Downloadable PDF report', 'Shareable link for your mechanic or dealer', 'Priority support']}
+            ];
+
+            function cards() {return PK.map(function (p, i) {return '<div class="pc' + (p.g ? ' g' : '') + '" role="button" tabindex="0" aria-pressed="false" data-i="' + i + '">' + (p.tag ? '<span class="tg">' + p.tag + '</span>' : '') + '<h3>' + p.n + '</h3><div class="pr">$' + p.p + '</div><span style="color:var(--mut);font-size:14px">' + p.d + '</span><ul>' + p.f.map(function (x) {return '<li>' + x + '</li>'}).join('') + '</ul><span class="sel">Choose ' + p.n + '</span></div>'}).join('')}
+            function bind(box, fn) {Q(box + ' .pc').forEach(function (c) {var go = function () {Q(box + ' .pc').forEach(function (x) {x.setAttribute('aria-pressed', x === c)}); fn(PK[+c.dataset.i])}; c.onclick = go; c.onkeydown = function (e) {if (e.key === 'Enter' || e.key === ' ') {e.preventDefault(); go()} }})}
+
+            function renderPackagesUI(v) {
+                var ok = cd(v) === v[8], y = yr(v), L = $('rl');
+                L.style.cssText = '';
+                L.innerHTML = '<a href="#" id="ed" style="color:var(--mut);text-decoration:none;font-weight:600">← Check another VIN</a><h1 style="font-size:clamp(28px,3.6vw,42px);margin:16px 0 8px">Know your car before you buy it</h1><p style="color:var(--mut);max-width:70ch;font-size:17px;margin:0 0 20px">A clean paint job can hide a past accident, a rolled-back odometer or a salvage title. Once the money is gone, so is your leverage. A few minutes now can save you from a costly surprise later. Pick the report that covers what you can’t see.</p><div class="vinb">VIN &nbsp; ' + v + (ok && y ? ' &nbsp;·&nbsp; ' + y + ' &nbsp;·&nbsp; ' + rg(v[0]) : '') + '</div><div class="pkg" id="rp">' + cards() + '</div><div id="paybox"></div>';
+                $('ed').onclick = function (e) {e.preventDefault(); home()};
+                bind('#rp', function (p) {checkout(p, v)})
+            }
+
+            function checkout(p, v) {
+                var L = $('rl'), mt = {card: 'Card form mounts here. Connect your payment provider.', paypal: 'PayPal button mounts here.', gpay: 'Google Pay button mounts here.'};
+                scrollTo(0, 0);
+                L.style.cssText = '';
+                L.innerHTML = '<a href="#" id="bk" style="color:var(--mut);text-decoration:none;font-weight:600">← Change package</a><div class="stp"><span class="dn"><b>✓</b>Package</span><hr><span class="on"><b>2</b>Your details &amp; payment</span></div><div class="co"><div class="cd"><h3>Your details</h3><label class="f" for="cn">Full name</label><input class="em" id="cn" autocomplete="name" placeholder="Your full name"><label class="f" for="ce">Email address</label><input class="em" id="ce" type="email" autocomplete="email" placeholder="Your report will be sent here"><h3 style="margin-top:10px">Payment method</h3><div class="pm"><label><input type="radio" name="py" value="card" checked> 💳 Credit or Debit card</label><label><input type="radio" name="py" value="paypal"> PayPal</label><label><input type="radio" name="py" value="gpay"> Google Pay</label></div><div class="mnt" id="payment-mount">' + mt.card + '</div><div class="rn"><b>Digital product, instant delivery</b><p>Your report is generated and delivered immediately after payment. Once it has been delivered, the sale is final and non-refundable. We refund in full if the report cannot be generated or delivered, or if you are charged twice. <a href="#" data-policy>Read the full Refund Policy</a></p></div><label style="display:flex;gap:10px;margin:16px 0 0;font-size:14px;cursor:pointer"><input type="checkbox" id="ct" style="accent-color:#0084ff"> I understand this is an instantly delivered digital report that is non-refundable once delivered. I agree to the Terms, Refund Policy and Privacy Policy.</label><p class="fe" id="fe" role="alert"></p><button class="btn" id="payBtn" type="button" style="width:100%">🔒 Pay $' + p.p + '.00</button></div><div class="cd sum"><h3>Order summary</h3><div class="li"><span>Vehicle (VIN)</span><b>' + v + '</b></div><div class="li"><span>' + p.n + ' report</span><b>$' + p.p + '.00</b></div><ul class="fl2">' + p.f.map(function (x) {return '<li>' + x + '</li>'}).join('') + '</ul><div class="li t"><span>Total</span><span>$' + p.p + '.00</span></div></div></div>';
+
+                $('bk').onclick = function (e) {e.preventDefault(); renderPackagesUI(v)};
+                Q('input[name=py]').forEach(function (r) {r.onchange = function () {$('payment-mount').textContent = mt[r.value]}});
+
+                $('payBtn').onclick = function () {
+                    var n = $('cn').value.trim(), em = $('ce').value.trim(), fe = $('fe');
+                    if (n.length < 2) {fe.textContent = 'Enter your full name.'; $('cn').focus(); return }
+                    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) {fe.textContent = 'Enter a valid email address.'; $('ce').focus(); return }
+                    if (!$('ct').checked) {fe.textContent = 'Please accept the Terms, Refund Policy and Privacy Policy.'; return }
+                    fe.textContent = '';
+
+                    var o = {vin: v, package: p.n, price: p.p, currency: 'USD', name: n, email: em, method: document.querySelector('input[name=py]:checked').value, termsAccepted: true, termsAcceptedAt: new Date().toISOString(), termsVersion: '2026-10-31'};
+                    if (typeof window.vinApexCheckout === 'function') {window.vinApexCheckout(o)} else {toast('Demo: define window.vinApexCheckout(order) to connect your payment API.')}
+                }
+            }
+
+            var REFUND_EMAIL = 'support@vinapex.com', REFUND_ENDPOINT = '';
+            function esc(t) {return String(t).replace(/[&<>"']/g, function (c) {return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]})}
+            function refundPage() {
+                var pl = $('pol'); if (pl && pl.open) pl.close();
+                if ($('rf-go') && $('res').style.display === 'block') return;
+                var L = $('rl'); $('land').style.display = 'none'; $('res').style.display = 'block';
+                L.style.cssText = '';
+                L.innerHTML = '<a href="#" id="rf-back" style="color:var(--mut);text-decoration:none;font-weight:600">← Back to home</a><h1 style="font-size:clamp(28px,3.6vw,42px);margin:16px 0 8px">Request a refund</h1><p style="color:var(--mut);max-width:62ch;font-size:17px;margin:0 0 24px">Tell us which report you ordered and what went wrong. Requests should reach us within 7 days of your purchase. Please read our <a href="#" data-policy style="color:var(--b);font-weight:600">Refund Policy</a> first.</p><div class="cd" id="rf-card"><h3>Your details</h3><label class="f" for="rf-n">Full name</label><input class="em" id="rf-n" autocomplete="name" placeholder="Your full name"><label class="f" for="rf-e">Email address</label><input class="em" id="rf-e" type="email" autocomplete="email" placeholder="The email you used at checkout"><label class="f" for="rf-v">VIN number</label><input class="em" id="rf-v" maxlength="17" autocomplete="off" placeholder="17-character VIN of the report" style="text-transform:uppercase"><label class="f" for="rf-m">What went wrong?</label><textarea class="em" id="rf-m" rows="4" placeholder="Briefly explain why you are requesting a refund" style="min-height:110px;resize:vertical"></textarea><p class="fe" id="rf-fe" role="alert"></p><button class="btn" id="rf-go" type="button" style="width:100%">Send refund request</button></div>';
+                scrollTo(0, 0);
+                $('rf-back').onclick = function (e) {e.preventDefault(); home()};
+                $('rf-v').oninput = function () {this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')};
+                $('rf-go').onclick = function () {
+                    var n = $('rf-n').value.trim(), em = $('rf-e').value.trim(), v = $('rf-v').value.trim(), m = $('rf-m').value.trim(), fe = $('rf-fe'), btn = this;
+                    if (n.length < 2) {fe.textContent = 'Enter your full name.'; $('rf-n').focus(); return }
+                    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) {fe.textContent = 'Enter a valid email address.'; $('rf-e').focus(); return }
+                    if (v.length !== 17) {fe.textContent = 'A VIN has 17 characters.'; $('rf-v').focus(); return }
+                    if (m.length < 10) {fe.textContent = 'Please tell us briefly what went wrong.'; $('rf-m').focus(); return }
+                    fe.textContent = '';
+                    var req = {type: 'refund_request', name: n, email: em, vin: v, message: m, submittedAt: new Date().toISOString()}, card = $('rf-card');
+                    btn.disabled = true; btn.textContent = 'Sending…';
+                    function summary() {return '<ul><li>Name: ' + esc(n) + '</li><li>Email: ' + esc(em) + '</li><li>VIN: ' + esc(v) + '</li></ul>'}
+                    function ok() {card.innerHTML = '<div class="rfr"><b class="t">✓ Request sent</b>We received your refund request. We will reply to <b>' + esc(em) + '</b>.</div><p style="margin:20px 0 0"><a href="#" id="rf-home" style="color:var(--b);font-weight:600;text-decoration:none">← Back to home</a></p>'; $('rf-home').onclick = function (e) {e.preventDefault(); home()}}
+                    function bad() {fe.textContent = 'We could not send your request.'; btn.disabled = false; btn.textContent = 'Send refund request'}
+                    if (typeof window.vinApexRefundRequest === 'function') {try {Promise.resolve(window.vinApexRefundRequest(req)).then(ok, bad)} catch (x) {bad()} }
+                    else if (REFUND_ENDPOINT) {fetch(REFUND_ENDPOINT, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(req)}).then(function (r) {if (!r.ok) throw new Error('failed'); ok()}).catch(bad)}
+                }
+            }
+            document.addEventListener('click', function (e) {var a = e.target.closest('[data-refund]'); if (a) {e.preventDefault(); refundPage()} });
+
+            // Language selector setup
+            var cur = 'us', orig = new WeakMap(), obs;
+            var LG = [['us', 'English (US)', 'en-US'], ['gb', 'English (UK)', 'en-GB'], ['es', 'Español', 'es'], ['fr', 'Français', 'fr'], ['de', 'Deutsch', 'de']];
+            var lgBox = $('lgbox'), lgBtn = $('lgbtn'), lgUl = $('lgul');
+            lgUl.innerHTML = LG.map(function (g) {return '<li role="option" tabindex="-1" data-c="' + g[0] + '"><span>' + g[1] + '</span></li>'}).join('');
+            function lgShow(c) {var g = LG.filter(function (x) {return x[0] === c})[0]; lgBtn.innerHTML = '<span>' + g[1] + '</span> <span aria-hidden="true">▾</span>'; Q('#lgul li').forEach(function (li) {li.setAttribute('aria-selected', li.dataset.c === c)})}
+            function lgOpen(o) {lgBox.classList.toggle('o', o); lgBtn.setAttribute('aria-expanded', o)}
+            lgBtn.onclick = function () {lgOpen(!lgBox.classList.contains('o'))};
+            lgUl.onclick = function (e) {var li = e.target.closest('li'); if (li) {cur = li.dataset.c; lgShow(cur); lgOpen(false); lgBtn.focus()} };
+            document.addEventListener('click', function (e) {if (!lgBox.contains(e.target)) lgOpen(false)});
+            lgShow('us');
+
+            // Walkthrough Video player
+            (function () {
+                var box = $('vid'), V = '1HGCM82633A004352', S = ['Enter the 17-character VIN', 'Press “Check VIN” and wait a moment', 'Choose the report that fits you', 'Pay securely and open your report'];
+                box.innerHTML = '<div class="vs"><div class="bw"><i></i><i></i><i></i><span>vinapex.com</span></div><div class="sw"><div class="sc"><h4>Enter the VIN</h4><div class="fb"><span id="vtx"></span><em id="vgo">Check VIN ›</em></div></div><div class="sc"><div class="a"><div class="sp"></div><h4>Looking up this vehicle…</h4></div><div class="b"><div class="okk">✓</div><h4>Good news! Records found</h4></div></div><div class="sc"><h4>Choose your report</h4><div class="pm3">' + PK.map(function (p) {return '<div><b>$' + p.p + '</b>' + p.n + '</div>'}).join('') + '</div></div><div class="sc"><div class="okk">✓</div><h4>Payment complete. Your report is ready</h4></div></div><div class="cap"><i id="vn"></i><span id="vc"></span></div></div><button class="play" aria-label="Play video"></button><div class="vc2"><button class="vtg" aria-label="Play or pause">❚❚</button><div class="vbar" id="vbr"><i id="vf"></i></div><span id="vtm"></span></div>';
+                function tx(e) {var n = document.createTextNode(''); e.appendChild(n); return n}
+                var sc = box.querySelectorAll('.sc'), pk = box.querySelectorAll('.pm3 div'), a = sc[1].querySelector('.a'), b = sc[1].querySelector('.b'), go = $('vgo'), f = $('vf'), tg = box.querySelector('.vtg'), T1 = tx($('vtx')), T2 = tx($('vn')), T3 = tx($('vc')), T4 = tx($('vtm')), t = 0, pl = false, last = 0, cs = -1;
+                function draw(x) {
+                    var i = Math.min(3, x / 5 | 0); if (i !== cs) {cs = i; for (var k = 0; k < 4; k++)sc[k].classList.toggle('on', k === i); T2.nodeValue = i + 1; T3.nodeValue = S[i]}
+                    T1.nodeValue = V.slice(0, Math.min(17, Math.max(0, Math.floor((x - .3) / 3.2 * 17)))); go.classList.toggle('pr', x > 4.1 && x < 4.7); a.style.display = x < 7.3 ? '' : 'none'; b.style.display = x < 7.3 ? 'none' : '';
+                    for (var j = 0; j < pk.length; j++)pk[j].classList.toggle('sel', x > 12.2 && j === 1); f.style.width = x / 20 * 100 + '%'; T4.nodeValue = '0:' + ('0' + Math.floor(x)).slice(-2) + ' / 0:20'
+                }
+                function tick(n) {if (!pl) return; t += (n - last) / 1000; last = n; if (t >= 20) {t = 20; stop()} draw(t); if (pl) requestAnimationFrame(tick)}
+                function play() {if (t >= 20) t = 0; pl = true; box.classList.add('pl'); tg.textContent = '❚❚'; last = performance.now(); requestAnimationFrame(tick)}
+                function stop() {pl = false; box.classList.remove('pl'); tg.textContent = '▶'}
+                box.querySelector('.play').onclick = play; tg.onclick = function () {pl ? stop() : play()};
+                $('vbr').onclick = function (e) {var r = this.getBoundingClientRect(); t = Math.max(0, Math.min(19.9, (e.clientX - r.left) / r.width * 20)); draw(t)};
+                draw(3.6); tg.textContent = '▶'
+            })();
+        })();
+
+        // -------------------------------------------------------------------------
+        // VinApex ePaymentVista Checkout Integration & Auto-Verification
+        // -------------------------------------------------------------------------
+
+        window.vinApexCheckout = function (o) {
+            var fe = document.getElementById('fe');
+            if (fe) fe.textContent = 'Preparing secure payment gateway...';
+
+            try {
+                localStorage.setItem('va_pending_order', JSON.stringify({
+                    vin: o.vin,
+                    package: o.package,
+                    price: o.price,
+                    name: o.name,
+                    email: o.email,
+                    timestamp: new Date().getTime()
+                }));
+            } catch (err) {
+                console.error('Failed to save pending order locally:', err);
+            }
+
+            // Clean origin URL detection for Live/Netlify domain
+            var currentOrigin = window.location.origin + window.location.pathname;
+
+            var returnUrl = encodeURIComponent(currentOrigin + '?success=true');
+            var cancelUrl = encodeURIComponent(currentOrigin + '?canceled=true');
+
+            var checkoutUrl = 'https://pay.epayvista.com/pay' +
+                '?merchant_id=979' +
+                '&project_id=1115' +
+                '&amount=' + encodeURIComponent(o.price) +
+                '&order_id=' + encodeURIComponent('VIN-' + Date.now()) +
+                '&customer_name=' + encodeURIComponent(o.name) +
+                '&customer_email=' + encodeURIComponent(o.email) +
+                '&return_url=' + returnUrl +
+                '&cancel_url=' + cancelUrl;
+
+            window.location.href = checkoutUrl;
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var urlParams = new URLSearchParams(window.location.search);
+            var isSuccess = urlParams.get('success');
+            var txnId = urlParams.get('transaction_id') || urlParams.get('txn_id') || urlParams.get('reference');
+
+            if (isSuccess === 'true') {
+                var rawPending = localStorage.getItem('va_pending_order');
+                if (!rawPending) return;
+
+                var pendingOrder = JSON.parse(rawPending);
+
+                var land = document.getElementById('land');
+                var res = document.getElementById('res');
+                var rl = document.getElementById('rl');
+
+                if (land) land.style.display = 'none';
+                if (res) res.style.display = 'block';
+
+                if (rl) {
+                    rl.style.cssText = 'max-width:760px;margin:0 auto;width:100%;padding:44px 28px;text-align:center;';
+                    rl.innerHTML =
+                        '<div class="sp" style="margin: 30px auto;"></div>' +
+                        '<h2 style="font-size:28px;">Verifying Payment with ePaymentVista...</h2>' +
+                        '<p style="color:var(--mut);">Please do not close or refresh this tab.</p>';
+                }
+
+                fetch('/.netlify/functions/verify-and-notify', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        transaction_id: txnId || ('TXN-VISTA-' + Date.now()),
+                        vin: pendingOrder.vin,
+                        packageName: pendingOrder.package,
+                        price: pendingOrder.price,
+                        name: pendingOrder.name,
+                        email: pendingOrder.email
+                    })
+                })
+                    .then(function (res) {return res.json();})
+                    .then(function (data) {
+                        if (data.is_pay_successful) {
+                            localStorage.removeItem('va_pending_order');
+
+                            if (rl) {
+                                rl.innerHTML =
+                                    '<div class="rfr" style="text-align:left; max-width:600px; margin:20px auto; padding:28px; background:var(--lb); border:2px solid var(--ok); border-radius:16px;">' +
+                                    '<b class="t" style="color:var(--ok); font-size:24px; display:block; margin-bottom:12px;">✓ Order Placed & Payment Confirmed!</b>' +
+                                    '<p style="font-size:16px; margin: 0 0 10px;">Thank you <b>' + pendingOrder.name + '</b>! Your vehicle report request for VIN <b style="letter-spacing:1px; background:#fff; padding:2px 8px; border-radius:4px; border:1px solid var(--line);">' + pendingOrder.vin + '</b> has been marked as <b>Paid</b>.</p>' +
+                                    '<p style="color:var(--mut); margin:0;">A confirmation email has been dispatched to <b>' + pendingOrder.email + '</b>. Our team is processing your report and will email it to you shortly.</p>' +
+                                    '</div>' +
+                                    '<p style="margin-top:28px;"><a href="/" class="btn bl" style="text-decoration:none;">Back to Home</a></p>';
+                            }
+                        } else {
+                            if (rl) {
+                                rl.innerHTML =
+                                    '<h2 style="color:var(--bad); font-size:28px;">Payment Verification Failed</h2>' +
+                                    '<p style="color:var(--mut);">' + (data.message || 'The gateway token could not be verified.') + '</p>' +
+                                    '<p style="margin-top:20px;"><a href="/" class="btn ol" style="text-decoration:none;">Try Again</a></p>';
+                            }
+                        }
+                    })
+                    .catch(function (err) {
+                        console.error('Backend Verification API Error:', err);
+                        if (rl) {
+                            rl.innerHTML =
+                                '<h2 style="color:var(--bad); font-size:28px;">Server Communication Error</h2>' +
+                                '<p style="color:var(--mut);">Could not establish connection to verification server. Please contact support.</p>';
+                        }
+                    });
+            }
+        });
+    </script>
+</body>
+
+</html>
+
