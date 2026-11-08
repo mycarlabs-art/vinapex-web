@@ -2382,8 +2382,8 @@
 
     <script>
         (function () {
-            var $ = function (i) {return document.getElementById(i)}, Q = function (s) {return [].slice.call(document.querySelectorAll(s))};
-            function toast(m) {var t = $('toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(function () {t.style.display = 'none'}, 3800)}
+            var $ = function (i) { return document.getElementById(i) }, Q = function (s) { return [].slice.call(document.querySelectorAll(s)) };
+            function toast(m) { var t = $('toast'); t.textContent = m; t.style.display = 'block'; clearTimeout(toast.t); toast.t = setTimeout(function () { t.style.display = 'none' }, 3800) }
 
             var F = [
                 ['Odometer Check', '📊', 'Every odometer reading with its date, in order, so a drop between two dates stands out.', [['Mar 2019', '41,200 mi', 'ok'], ['Jun 2021', '68,900 mi', 'ok'], ['Feb 2023', '52,300 mi', 'wn'], ['Sep 2025', '94,100 mi', 'ok']]],
@@ -2396,11 +2396,11 @@
 
             var ft = $('ft');
             function pane(i) {
-                Q('#ft button').forEach(function (b, k) {b.setAttribute('aria-selected', k === i)});
+                Q('#ft button').forEach(function (b, k) { b.setAttribute('aria-selected', k === i) });
                 var f = F[i];
-                $('fp').innerHTML = '<div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><b style="font-size:17px">' + f[0] + '</b><div style="height:8px"></div>' + f[3].map(function (r) {return '<div class="li"><span style="color:var(--mut)">' + r[0] + '</span><span class="' + r[2] + '"><b>' + r[1] + '</b></span></div>'}).join('') + '</div></div><div><div class="ic">' + f[1] + '</div><h3>' + f[2] + '</h3><a class="btn bl" href="#top" data-top>Check Your Car ›</a></div>'
+                $('fp').innerHTML = '<div class="win"><div class="bar"><i></i><i></i><i></i></div><div class="bd"><b style="font-size:17px">' + f[0] + '</b><div style="height:8px"></div>' + f[3].map(function (r) { return '<div class="li"><span style="color:var(--mut)">' + r[0] + '</span><span class="' + r[2] + '"><b>' + r[1] + '</b></span></div>' }).join('') + '</div></div><div><div class="ic">' + f[1] + '</div><h3>' + f[2] + '</h3><a class="btn bl" href="#top" data-top>Check Your Car ›</a></div>'
             }
-            F.forEach(function (f, i) {var b = document.createElement('button'); b.textContent = f[0]; b.setAttribute('role', 'tab'); b.onclick = function () {pane(i)}; ft.appendChild(b)});
+            F.forEach(function (f, i) { var b = document.createElement('button'); b.textContent = f[0]; b.setAttribute('role', 'tab'); b.onclick = function () { pane(i) }; ft.appendChild(b) });
             pane(2);
 
             var C = [
@@ -2412,30 +2412,30 @@
                 ['Number of owners on file', 'Owners by state and period, plus prior fleet use'],
                 ['A pass through our data sources', 'Title records, theft records, liens and total loss records']
             ];
-            $('cmp').innerHTML = '<div class="h">📅 Free VIN check shows</div><div class="h p">✨ The full VinApex report adds</div>' + C.map(function (r) {return '<div class="c">' + r[0] + '</div><div class="c p">' + r[1] + '</div>'}).join('');
+            $('cmp').innerHTML = '<div class="h">📅 Free VIN check shows</div><div class="h p">✨ The full VinApex report adds</div>' + C.map(function (r) { return '<div class="c">' + r[0] + '</div><div class="c p">' + r[1] + '</div>' }).join('');
 
-            var M = {A: ['Acura', 'Alfa Romeo', 'Audi'], B: ['Bentley', 'BMW', 'Buick'], C: ['Cadillac', 'Chevrolet', 'Chrysler'], D: ['Dodge'], F: ['Ferrari', 'Fiat', 'Ford'], G: ['GMC', 'Genesis'], H: ['Honda', 'Hyundai'], J: ['Jaguar', 'Jeep'], K: ['Kia'], L: ['Land Rover', 'Lexus'], M: ['Mazda', 'Mercedes-Benz', 'Mini'], N: ['Nissan'], P: ['Porsche'], R: ['Ram', 'Rivian'], S: ['Subaru', 'Suzuki'], T: ['Tesla', 'Toyota'], V: ['Volkswagen', 'Volvo']};
-            $('mk').innerHTML = Object.keys(M).map(function (k) {return '<div><b>' + k + '</b>' + M[k].map(function (m) {return '<a href="#top" data-top>' + m + '</a>'}).join('') + '</div>'}).join('');
+            var M = { A: ['Acura', 'Alfa Romeo', 'Audi'], B: ['Bentley', 'BMW', 'Buick'], C: ['Cadillac', 'Chevrolet', 'Chrysler'], D: ['Dodge'], F: ['Ferrari', 'Fiat', 'Ford'], G: ['GMC', 'Genesis'], H: ['Honda', 'Hyundai'], J: ['Jaguar', 'Jeep'], K: ['Kia'], L: ['Land Rover', 'Lexus'], M: ['Mazda', 'Mercedes-Benz', 'Mini'], N: ['Nissan'], P: ['Porsche'], R: ['Ram', 'Rivian'], S: ['Subaru', 'Suzuki'], T: ['Tesla', 'Toyota'], V: ['Volkswagen', 'Volvo'] };
+            $('mk').innerHTML = Object.keys(M).map(function (k) { return '<div><b>' + k + '</b>' + M[k].map(function (m) { return '<a href="#top" data-top>' + m + '</a>' }).join('') + '</div>' }).join('');
 
             var BL = [['⛽', '#ffe9c7', 'Maintenance and Safety', '10 min read', 'Bad Gas in a Car: How Serious Is It?', 'Bad fuel can quickly turn into expensive car trouble. Here’s what happens when…'], ['🎓', '#d9ecff', 'Car Buying Guides', '9 min read', 'How to Buy a Car as a Student on a Budget', 'College students face high prices, low credit and zero room for mistakes when…'], ['📝', '#e2f5e6', 'Car Buying Guides', '9 min read', 'Can You Buy a Car Without a License?', 'Many people buy cars before they ever get a license. If you’re planning to do…']];
-            $('bl').innerHTML = BL.map(function (b) {return '<div><div class="im" style="background:' + b[1] + '">' + b[0] + '</div><span class="tag">' + b[2] + '</span><small style="color:var(--mut)">⏱ ' + b[3] + '</small><h4 style="margin-top:8px">' + b[4] + '</h4><p>' + b[5] + '</p><a href="#">Read more ›</a></div>'}).join('');
+            $('bl').innerHTML = BL.map(function (b) { return '<div><div class="im" style="background:' + b[1] + '">' + b[0] + '</div><span class="tag">' + b[2] + '</span><small style="color:var(--mut)">⏱ ' + b[3] + '</small><h4 style="margin-top:8px">' + b[4] + '</h4><p>' + b[5] + '</p><a href="#">Read more ›</a></div>' }).join('');
 
             var Fq = [['What is a VinApex Vehicle History Report?', 'A report that turns one VIN into title, accident, odometer, recall, sales and owner records for that exact vehicle.'], ['For whom do we provide Vehicle History Reports?', 'Used-car buyers, sellers, dealers and anyone who wants to verify a vehicle before a deal.'], ['Do reports have information on every vehicle?', 'No report can cover every vehicle. When there isn’t enough data, we tell you and let you leave an email.'], ['What is a VIN?', 'A 17-character code that identifies one specific vehicle. It never contains the letters I, O or Q.'], ['Where can I find my VIN number?', 'At the driver-side base of the windshield, on the driver’s door jamb sticker, and on registration or insurance papers.']];
-            $('faq').innerHTML = Fq.map(function (q) {return '<details><summary>' + q[0] + '</summary><p>' + q[1] + '</p></details>'}).join('');
+            $('faq').innerHTML = Fq.map(function (q) { return '<details><summary>' + q[0] + '</summary><p>' + q[1] + '</p></details>' }).join('');
 
-            $('stars').innerHTML = [1, 2, 3, 4, 5].map(function (n) {return '<button aria-label="' + n + ' stars">★</button>'}).join('');
-            Q('#stars button').forEach(function (b, i) {b.onclick = function () {toast('Thanks! You rated ' + (i + 1) + ' of 5 (demo).')}});
+            $('stars').innerHTML = [1, 2, 3, 4, 5].map(function (n) { return '<button aria-label="' + n + ' stars">★</button>' }).join('');
+            Q('#stars button').forEach(function (b, i) { b.onclick = function () { toast('Thanks! You rated ' + (i + 1) + ' of 5 (demo).') } });
 
             var S = ['California', 'New York', 'Florida', 'Ohio', 'Michigan', 'Indiana', 'Washington', 'Minnesota', 'Maryland', 'Colorado', 'Tennessee'], S2 = ['California', 'Florida', 'Texas', 'Georgia', 'Michigan', 'Minnesota', 'New York', 'New Jersey', 'Virginia', 'South Carolina', 'Missouri'];
-            $('s1').innerHTML = S.map(function (s) {return '<a href="#plate">' + s + '</a>'}).join('');
-            $('s2').innerHTML = S2.map(function (s) {return '<a href="#top" data-top>' + s + '</a>'}).join('');
+            $('s1').innerHTML = S.map(function (s) { return '<a href="#plate">' + s + '</a>' }).join('');
+            $('s2').innerHTML = S2.map(function (s) { return '<a href="#top" data-top>' + s + '</a>' }).join('');
 
             var FC = [['Customer Service', ['Mon–Fri support (demo)', 'Chat available 24/7']], ['About VinApex', ['About Us', 'Data Sources', 'Contact Us', 'Reviews', 'Blog', 'Affiliate Program']], ['Support', ['Glossary', 'FAQ', 'Refund Policy', 'Privacy Policy', 'Terms & Conditions']], ['VIN Decoder', ['Window Sticker', 'Motorcycle VIN Check', 'RV VIN Lookup', 'VIN Check by State', 'Sample Report']], ['Vehicle History Report', ['License Plate Lookup', 'Free Title Check', 'Flood Damage Check', 'Free Odometer Check', 'Salvage Title Check', 'Stolen Vehicle Check']]];
-            $('fc').innerHTML = FC.map(function (c) {return '<div><h4>' + c[0] + '</h4>' + c[1].map(function (l) {return '<a href="#"' + (l === 'Refund Policy' ? ' data-policy' : '') + '>' + l + '</a>'}).join('') + '</div>'}).join('');
+            $('fc').innerHTML = FC.map(function (c) { return '<div><h4>' + c[0] + '</h4>' + c[1].map(function (l) { return '<a href="#"' + (l === 'Refund Policy' ? ' data-policy' : '') + '>' + l + '</a>' }).join('') + '</div>' }).join('');
 
             var pol = $('pol');
-            document.addEventListener('click', function (e) {var a = e.target.closest('[data-policy]'); if (a) {e.preventDefault(); if (pol.showModal) pol.showModal(); else pol.setAttribute('open', '')} });
-            $('polx').onclick = function () {pol.close()};
+            document.addEventListener('click', function (e) { var a = e.target.closest('[data-policy]'); if (a) { e.preventDefault(); if (pol.showModal) pol.showModal(); else pol.setAttribute('open', '') } });
+            $('polx').onclick = function () { pol.close() };
             pol.addEventListener('click', function (e) {
                 var j = e.target.closest('[data-jump]');
                 if (j) {
@@ -2447,29 +2447,29 @@
                     }
                 }
             });
-            pol.addEventListener('click', function (e) {if (e.target === pol) pol.close()});
+            pol.addEventListener('click', function (e) { if (e.target === pol) pol.close() });
 
-            Q('[data-home]').forEach(function (a) {a.onclick = function (e) {e.preventDefault(); home()}});
-            Q('[data-top]').forEach(function (a) {a.onclick = function (e) {e.preventDefault(); home(); Q('.vin')[0].focus(); scrollTo(0, 0)}});
+            Q('[data-home]').forEach(function (a) { a.onclick = function (e) { e.preventDefault(); home() } });
+            Q('[data-top]').forEach(function (a) { a.onclick = function (e) { e.preventDefault(); home(); Q('.vin')[0].focus(); scrollTo(0, 0) } });
 
-            $('ckx').onclick = function () {$('ck').style.display = 'none'};
+            $('ckx').onclick = function () { $('ck').style.display = 'none' };
             Q('.tb button').forEach(function (b) {
                 b.onclick = function () {
                     var p = b.parentNode;
-                    [].forEach.call(p.children, function (x) {x.setAttribute('aria-selected', x === b)});
+                    [].forEach.call(p.children, function (x) { x.setAttribute('aria-selected', x === b) });
                     var e = p.parentNode.querySelector('.er');
-                    if (b.dataset.t === 'plate') {e.style.color = '#4da3ff'; e.textContent = 'Plate lookup needs a data provider. Use a VIN for now.'} else e.textContent = ''
+                    if (b.dataset.t === 'plate') { e.style.color = '#4da3ff'; e.textContent = 'Plate lookup needs a data provider. Use a VIN for now.' } else e.textContent = ''
                 }
             });
 
             Q('.vin').forEach(function (v) {
-                v.oninput = function () {v.value = v.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); Q('.er').forEach(function (e) {e.textContent = ''})};
-                v.onkeydown = function (e) {if (e.key === 'Enter') run(v)}
+                v.oninput = function () { v.value = v.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); Q('.er').forEach(function (e) { e.textContent = '' }) };
+                v.onkeydown = function (e) { if (e.key === 'Enter') run(v) }
             });
-            Q('.go').forEach(function (b) {b.onclick = function () {run(b.parentNode.querySelector('.vin'))}});
-            Q('.sm').forEach(function (a) {a.onclick = function (e) {e.preventDefault(); var v = Q('.vin')[0]; v.value = '1HGCM82633A004352'; run(v)}});
+            Q('.go').forEach(function (b) { b.onclick = function () { run(b.parentNode.querySelector('.vin')) } });
+            Q('.sm').forEach(function (a) { a.onclick = function (e) { e.preventDefault(); var v = Q('.vin')[0]; v.value = '1HGCM82633A004352'; run(v) } });
 
-            function home() {$('res').style.display = 'none'; $('land').style.display = 'block'; scrollTo(0, 0)}
+            function home() { $('res').style.display = 'none'; $('land').style.display = 'block'; scrollTo(0, 0) }
 
             var sc = $('scene'), ph = $('ph'), cr = $('cr');
             if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -2480,60 +2480,60 @@
                 }
             }
 
-            var TR = {A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, J: 1, K: 2, L: 3, M: 4, N: 5, P: 7, R: 9, S: 2, T: 3, U: 4, V: 5, W: 6, X: 7, Y: 8, Z: 9}, WT = [8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2], YR = 'ABCDEFGHJKLMNPRSTVWXY123456789';
-            function cd(v) {var s = 0; for (var i = 0; i < 17; i++)s += (/\d/.test(v[i]) ? +v[i] : TR[v[i]]) * WT[i]; var r = s % 11; return r === 10 ? 'X' : '' + r}
-            function yr(v) {var k = YR.indexOf(v[9]); return k < 0 ? null : (/[A-Z]/.test(v[6]) ? 2010 : 1980) + k}
-            function rg(c) {return '12345'.indexOf(c) > -1 ? (c === '2' ? 'Canada' : c === '3' ? 'Mexico' : 'United States') : ({J: 'Japan', K: 'South Korea', L: 'China', S: 'United Kingdom', V: 'France / Spain', W: 'Germany', Z: 'Italy'})[c] || 'Other region'}
+            var TR = { A: 1, B: 2, C: 3, D: 4, E: 5, F: 6, G: 7, H: 8, J: 1, K: 2, L: 3, M: 4, N: 5, P: 7, R: 9, S: 2, T: 3, U: 4, V: 5, W: 6, X: 7, Y: 8, Z: 9 }, WT = [8, 7, 6, 5, 4, 3, 2, 10, 0, 9, 8, 7, 6, 5, 4, 3, 2], YR = 'ABCDEFGHJKLMNPRSTVWXY123456789';
+            function cd(v) { var s = 0; for (var i = 0; i < 17; i++)s += (/\d/.test(v[i]) ? +v[i] : TR[v[i]]) * WT[i]; var r = s % 11; return r === 10 ? 'X' : '' + r }
+            function yr(v) { var k = YR.indexOf(v[9]); return k < 0 ? null : (/[A-Z]/.test(v[6]) ? 2010 : 1980) + k }
+            function rg(c) { return '12345'.indexOf(c) > -1 ? (c === '2' ? 'Canada' : c === '3' ? 'Mexico' : 'United States') : ({ J: 'Japan', K: 'South Korea', L: 'China', S: 'United Kingdom', V: 'France / Spain', W: 'Germany', Z: 'Italy' })[c] || 'Other region' }
 
             function run(inp) {
                 var v = inp.value, e = inp.parentNode.parentNode.querySelector('.er'); e.style.color = '';
-                if (v.length !== 17) {e.textContent = 'A VIN has 17 characters. You entered ' + v.length + '.'; return }
-                if (/[IOQ]/.test(v)) {e.textContent = 'VINs never contain I, O or Q. Check for 1 or 0 instead.'; return }
+                if (v.length !== 17) { e.textContent = 'A VIN has 17 characters. You entered ' + v.length + '.'; return }
+                if (/[IOQ]/.test(v)) { e.textContent = 'VINs never contain I, O or Q. Check for 1 or 0 instead.'; return }
                 $('land').style.display = 'none'; $('res').style.display = 'block'; scrollTo(0, 0);
                 $('rl').innerHTML = '<h2 style="font-size:34px">Checking ' + v + '…</h2><p style="color:var(--mut)">Searching databases, this takes a moment.</p>';
-                setTimeout(function () {renderPackagesUI(v)}, 1000)
+                setTimeout(function () { renderPackagesUI(v) }, 1000)
             }
 
             var PK = [
-                {n: 'Basic', p: 25, d: 'Know the essentials about your car', f: ['Full VIN decode: year, make, model, engine, trim', 'Factory specs and equipment list', 'Open safety recalls', 'Odometer status and rollback flag', 'Accident record count', 'Number of previous owners', 'Sales listing count', 'Title brand summary', 'Instant online report']},
-                {n: 'Silver', p: 55, tag: 'Most popular', d: 'The full history behind the sale', f: ['Everything in Basic', 'Complete odometer history with dates', 'Detailed damage records and impact area', 'Damage photos', 'Ownership history by state and period', 'Prior use: rental, taxi or fleet', 'Past listings with price and photos', 'Flood and fire damage check', 'Lemon and buyback history', 'Mileage compared with similar cars']},
-                {n: 'Gold', p: 75, tag: 'Best value', g: 1, d: 'Total peace of mind, nothing held back', f: ['Everything in Silver', 'Salvage and auction photos with repair estimates', 'Theft record and active lien check', 'Total loss and insurance claim records', 'Airbag deployment records', 'Recall details with repair status', 'Estimated market value', 'Estimated cost of ownership', 'Downloadable PDF report', 'Shareable link for your mechanic or dealer', 'Priority support']}
+                { n: 'Basic', p: 25, d: 'Know the essentials about your car', f: ['Full VIN decode: year, make, model, engine, trim', 'Factory specs and equipment list', 'Open safety recalls', 'Odometer status and rollback flag', 'Accident record count', 'Number of previous owners', 'Sales listing count', 'Title brand summary', 'Instant online report'] },
+                { n: 'Silver', p: 55, tag: 'Most popular', d: 'The full history behind the sale', f: ['Everything in Basic', 'Complete odometer history with dates', 'Detailed damage records and impact area', 'Damage photos', 'Ownership history by state and period', 'Prior use: rental, taxi or fleet', 'Past listings with price and photos', 'Flood and fire damage check', 'Lemon and buyback history', 'Mileage compared with similar cars'] },
+                { n: 'Gold', p: 75, tag: 'Best value', g: 1, d: 'Total peace of mind, nothing held back', f: ['Everything in Silver', 'Salvage and auction photos with repair estimates', 'Theft record and active lien check', 'Total loss and insurance claim records', 'Airbag deployment records', 'Recall details with repair status', 'Estimated market value', 'Estimated cost of ownership', 'Downloadable PDF report', 'Shareable link for your mechanic or dealer', 'Priority support'] }
             ];
 
-            function cards() {return PK.map(function (p, i) {return '<div class="pc' + (p.g ? ' g' : '') + '" role="button" tabindex="0" aria-pressed="false" data-i="' + i + '">' + (p.tag ? '<span class="tg">' + p.tag + '</span>' : '') + '<h3>' + p.n + '</h3><div class="pr">$' + p.p + '</div><span style="color:var(--mut);font-size:14px">' + p.d + '</span><ul>' + p.f.map(function (x) {return '<li>' + x + '</li>'}).join('') + '</ul><span class="sel">Choose ' + p.n + '</span></div>'}).join('')}
-            function bind(box, fn) {Q(box + ' .pc').forEach(function (c) {var go = function () {Q(box + ' .pc').forEach(function (x) {x.setAttribute('aria-pressed', x === c)}); fn(PK[+c.dataset.i])}; c.onclick = go; c.onkeydown = function (e) {if (e.key === 'Enter' || e.key === ' ') {e.preventDefault(); go()} }})}
+            function cards() { return PK.map(function (p, i) { return '<div class="pc' + (p.g ? ' g' : '') + '" role="button" tabindex="0" aria-pressed="false" data-i="' + i + '">' + (p.tag ? '<span class="tg">' + p.tag + '</span>' : '') + '<h3>' + p.n + '</h3><div class="pr">$' + p.p + '</div><span style="color:var(--mut);font-size:14px">' + p.d + '</span><ul>' + p.f.map(function (x) { return '<li>' + x + '</li>' }).join('') + '</ul><span class="sel">Choose ' + p.n + '</span></div>' }).join('') }
+            function bind(box, fn) { Q(box + ' .pc').forEach(function (c) { var go = function () { Q(box + ' .pc').forEach(function (x) { x.setAttribute('aria-pressed', x === c) }); fn(PK[+c.dataset.i]) }; c.onclick = go; c.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go() } } }) }
 
             function renderPackagesUI(v) {
                 var ok = cd(v) === v[8], y = yr(v), L = $('rl');
                 L.style.cssText = '';
                 L.innerHTML = '<a href="#" id="ed" style="color:var(--mut);text-decoration:none;font-weight:600">← Check another VIN</a><h1 style="font-size:clamp(28px,3.6vw,42px);margin:16px 0 8px">Know your car before you buy it</h1><p style="color:var(--mut);max-width:70ch;font-size:17px;margin:0 0 20px">A clean paint job can hide a past accident, a rolled-back odometer or a salvage title. Once the money is gone, so is your leverage. A few minutes now can save you from a costly surprise later. Pick the report that covers what you can’t see.</p><div class="vinb">VIN &nbsp; ' + v + (ok && y ? ' &nbsp;·&nbsp; ' + y + ' &nbsp;·&nbsp; ' + rg(v[0]) : '') + '</div><div class="pkg" id="rp">' + cards() + '</div><div id="paybox"></div>';
-                $('ed').onclick = function (e) {e.preventDefault(); home()};
-                bind('#rp', function (p) {checkout(p, v)})
+                $('ed').onclick = function (e) { e.preventDefault(); home() };
+                bind('#rp', function (p) { checkout(p, v) })
             }
 
             function checkout(p, v) {
-                var L = $('rl'), mt = {card: 'Card form mounts here. Connect your payment provider.', paypal: 'PayPal button mounts here.', gpay: 'Google Pay button mounts here.'};
+                var L = $('rl'), mt = { card: 'Card form mounts here. Connect your payment provider.', paypal: 'PayPal button mounts here.', gpay: 'Google Pay button mounts here.' };
                 scrollTo(0, 0);
                 L.style.cssText = '';
-                L.innerHTML = '<a href="#" id="bk" style="color:var(--mut);text-decoration:none;font-weight:600">← Change package</a><div class="stp"><span class="dn"><b>✓</b>Package</span><hr><span class="on"><b>2</b>Your details &amp; payment</span></div><div class="co"><div class="cd"><h3>Your details</h3><label class="f" for="cn">Full name</label><input class="em" id="cn" autocomplete="name" placeholder="Your full name"><label class="f" for="ce">Email address</label><input class="em" id="ce" type="email" autocomplete="email" placeholder="Your report will be sent here"><h3 style="margin-top:10px">Payment method</h3><div class="pm"><label><input type="radio" name="py" value="card" checked> 💳 Credit or Debit card</label><label><input type="radio" name="py" value="paypal"> PayPal</label><label><input type="radio" name="py" value="gpay"> Google Pay</label></div><div class="mnt" id="payment-mount">' + mt.card + '</div><div class="rn"><b>Digital product, instant delivery</b><p>Your report is generated and delivered immediately after payment. Once it has been delivered, the sale is final and non-refundable. We refund in full if the report cannot be generated or delivered, or if you are charged twice. <a href="#" data-policy>Read the full Refund Policy</a></p></div><label style="display:flex;gap:10px;margin:16px 0 0;font-size:14px;cursor:pointer"><input type="checkbox" id="ct" style="accent-color:#0084ff"> I understand this is an instantly delivered digital report that is non-refundable once delivered. I agree to the Terms, Refund Policy and Privacy Policy.</label><p class="fe" id="fe" role="alert"></p><button class="btn" id="payBtn" type="button" style="width:100%">🔒 Pay $' + p.p + '.00</button></div><div class="cd sum"><h3>Order summary</h3><div class="li"><span>Vehicle (VIN)</span><b>' + v + '</b></div><div class="li"><span>' + p.n + ' report</span><b>$' + p.p + '.00</b></div><ul class="fl2">' + p.f.map(function (x) {return '<li>' + x + '</li>'}).join('') + '</ul><div class="li t"><span>Total</span><span>$' + p.p + '.00</span></div></div></div>';
+                L.innerHTML = '<a href="#" id="bk" style="color:var(--mut);text-decoration:none;font-weight:600">← Change package</a><div class="stp"><span class="dn"><b>✓</b>Package</span><hr><span class="on"><b>2</b>Your details &amp; payment</span></div><div class="co"><div class="cd"><h3>Your details</h3><label class="f" for="cn">Full name</label><input class="em" id="cn" autocomplete="name" placeholder="Your full name"><label class="f" for="ce">Email address</label><input class="em" id="ce" type="email" autocomplete="email" placeholder="Your report will be sent here"><h3 style="margin-top:10px">Payment method</h3><div class="pm"><label><input type="radio" name="py" value="card" checked> 💳 Credit or Debit card</label><label><input type="radio" name="py" value="paypal"> PayPal</label><label><input type="radio" name="py" value="gpay"> Google Pay</label></div><div class="mnt" id="payment-mount">' + mt.card + '</div><div class="rn"><b>Digital product, instant delivery</b><p>Your report is generated and delivered immediately after payment. Once it has been delivered, the sale is final and non-refundable. We refund in full if the report cannot be generated or delivered, or if you are charged twice. <a href="#" data-policy>Read the full Refund Policy</a></p></div><label style="display:flex;gap:10px;margin:16px 0 0;font-size:14px;cursor:pointer"><input type="checkbox" id="ct" style="accent-color:#0084ff"> I understand this is an instantly delivered digital report that is non-refundable once delivered. I agree to the Terms, Refund Policy and Privacy Policy.</label><p class="fe" id="fe" role="alert"></p><button class="btn" id="payBtn" type="button" style="width:100%">🔒 Pay $' + p.p + '.00</button></div><div class="cd sum"><h3>Order summary</h3><div class="li"><span>Vehicle (VIN)</span><b>' + v + '</b></div><div class="li"><span>' + p.n + ' report</span><b>$' + p.p + '.00</b></div><ul class="fl2">' + p.f.map(function (x) { return '<li>' + x + '</li>' }).join('') + '</ul><div class="li t"><span>Total</span><span>$' + p.p + '.00</span></div></div></div>';
 
-                $('bk').onclick = function (e) {e.preventDefault(); renderPackagesUI(v)};
-                Q('input[name=py]').forEach(function (r) {r.onchange = function () {$('payment-mount').textContent = mt[r.value]}});
+                $('bk').onclick = function (e) { e.preventDefault(); renderPackagesUI(v) };
+                Q('input[name=py]').forEach(function (r) { r.onchange = function () { $('payment-mount').textContent = mt[r.value] } });
 
                 $('payBtn').onclick = function () {
                     var n = $('cn').value.trim(), em = $('ce').value.trim(), fe = $('fe');
-                    if (n.length < 2) {fe.textContent = 'Enter your full name.'; $('cn').focus(); return }
-                    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) {fe.textContent = 'Enter a valid email address.'; $('ce').focus(); return }
-                    if (!$('ct').checked) {fe.textContent = 'Please accept the Terms, Refund Policy and Privacy Policy.'; return }
+                    if (n.length < 2) { fe.textContent = 'Enter your full name.'; $('cn').focus(); return }
+                    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { fe.textContent = 'Enter a valid email address.'; $('ce').focus(); return }
+                    if (!$('ct').checked) { fe.textContent = 'Please accept the Terms, Refund Policy and Privacy Policy.'; return }
                     fe.textContent = '';
 
-                    var o = {vin: v, package: p.n, price: p.p, currency: 'USD', name: n, email: em, method: document.querySelector('input[name=py]:checked').value, termsAccepted: true, termsAcceptedAt: new Date().toISOString(), termsVersion: '2026-10-31'};
-                    if (typeof window.vinApexCheckout === 'function') {window.vinApexCheckout(o)} else {toast('Demo: define window.vinApexCheckout(order) to connect your payment API.')}
+                    var o = { vin: v, package: p.n, price: p.p, currency: 'USD', name: n, email: em, method: document.querySelector('input[name=py]:checked').value, termsAccepted: true, termsAcceptedAt: new Date().toISOString(), termsVersion: '2026-10-31' };
+                    if (typeof window.vinApexCheckout === 'function') { window.vinApexCheckout(o) } else { toast('Demo: define window.vinApexCheckout(order) to connect your payment API.') }
                 }
             }
 
             var REFUND_EMAIL = 'support@vinapex.com', REFUND_ENDPOINT = '';
-            function esc(t) {return String(t).replace(/[&<>"']/g, function (c) {return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]})}
+            function esc(t) { return String(t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] }) }
             function refundPage() {
                 var pl = $('pol'); if (pl && pl.open) pl.close();
                 if ($('rf-go') && $('res').style.display === 'block') return;
@@ -2541,54 +2541,54 @@
                 L.style.cssText = '';
                 L.innerHTML = '<a href="#" id="rf-back" style="color:var(--mut);text-decoration:none;font-weight:600">← Back to home</a><h1 style="font-size:clamp(28px,3.6vw,42px);margin:16px 0 8px">Request a refund</h1><p style="color:var(--mut);max-width:62ch;font-size:17px;margin:0 0 24px">Tell us which report you ordered and what went wrong. Requests should reach us within 7 days of your purchase. Please read our <a href="#" data-policy style="color:var(--b);font-weight:600">Refund Policy</a> first.</p><div class="cd" id="rf-card"><h3>Your details</h3><label class="f" for="rf-n">Full name</label><input class="em" id="rf-n" autocomplete="name" placeholder="Your full name"><label class="f" for="rf-e">Email address</label><input class="em" id="rf-e" type="email" autocomplete="email" placeholder="The email you used at checkout"><label class="f" for="rf-v">VIN number</label><input class="em" id="rf-v" maxlength="17" autocomplete="off" placeholder="17-character VIN of the report" style="text-transform:uppercase"><label class="f" for="rf-m">What went wrong?</label><textarea class="em" id="rf-m" rows="4" placeholder="Briefly explain why you are requesting a refund" style="min-height:110px;resize:vertical"></textarea><p class="fe" id="rf-fe" role="alert"></p><button class="btn" id="rf-go" type="button" style="width:100%">Send refund request</button></div>';
                 scrollTo(0, 0);
-                $('rf-back').onclick = function (e) {e.preventDefault(); home()};
-                $('rf-v').oninput = function () {this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '')};
+                $('rf-back').onclick = function (e) { e.preventDefault(); home() };
+                $('rf-v').oninput = function () { this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '') };
                 $('rf-go').onclick = function () {
                     var n = $('rf-n').value.trim(), em = $('rf-e').value.trim(), v = $('rf-v').value.trim(), m = $('rf-m').value.trim(), fe = $('rf-fe'), btn = this;
-                    if (n.length < 2) {fe.textContent = 'Enter your full name.'; $('rf-n').focus(); return }
-                    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) {fe.textContent = 'Enter a valid email address.'; $('rf-e').focus(); return }
-                    if (v.length !== 17) {fe.textContent = 'A VIN has 17 characters.'; $('rf-v').focus(); return }
-                    if (m.length < 10) {fe.textContent = 'Please tell us briefly what went wrong.'; $('rf-m').focus(); return }
+                    if (n.length < 2) { fe.textContent = 'Enter your full name.'; $('rf-n').focus(); return }
+                    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { fe.textContent = 'Enter a valid email address.'; $('rf-e').focus(); return }
+                    if (v.length !== 17) { fe.textContent = 'A VIN has 17 characters.'; $('rf-v').focus(); return }
+                    if (m.length < 10) { fe.textContent = 'Please tell us briefly what went wrong.'; $('rf-m').focus(); return }
                     fe.textContent = '';
-                    var req = {type: 'refund_request', name: n, email: em, vin: v, message: m, submittedAt: new Date().toISOString()}, card = $('rf-card');
+                    var req = { type: 'refund_request', name: n, email: em, vin: v, message: m, submittedAt: new Date().toISOString() }, card = $('rf-card');
                     btn.disabled = true; btn.textContent = 'Sending…';
-                    function summary() {return '<ul><li>Name: ' + esc(n) + '</li><li>Email: ' + esc(em) + '</li><li>VIN: ' + esc(v) + '</li></ul>'}
-                    function ok() {card.innerHTML = '<div class="rfr"><b class="t">✓ Request sent</b>We received your refund request. We will reply to <b>' + esc(em) + '</b>.</div><p style="margin:20px 0 0"><a href="#" id="rf-home" style="color:var(--b);font-weight:600;text-decoration:none">← Back to home</a></p>'; $('rf-home').onclick = function (e) {e.preventDefault(); home()}}
-                    function bad() {fe.textContent = 'We could not send your request.'; btn.disabled = false; btn.textContent = 'Send refund request'}
-                    if (typeof window.vinApexRefundRequest === 'function') {try {Promise.resolve(window.vinApexRefundRequest(req)).then(ok, bad)} catch (x) {bad()} }
-                    else if (REFUND_ENDPOINT) {fetch(REFUND_ENDPOINT, {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(req)}).then(function (r) {if (!r.ok) throw new Error('failed'); ok()}).catch(bad)}
+                    function summary() { return '<ul><li>Name: ' + esc(n) + '</li><li>Email: ' + esc(em) + '</li><li>VIN: ' + esc(v) + '</li></ul>' }
+                    function ok() { card.innerHTML = '<div class="rfr"><b class="t">✓ Request sent</b>We received your refund request. We will reply to <b>' + esc(em) + '</b>.</div><p style="margin:20px 0 0"><a href="#" id="rf-home" style="color:var(--b);font-weight:600;text-decoration:none">← Back to home</a></p>'; $('rf-home').onclick = function (e) { e.preventDefault(); home() } }
+                    function bad() { fe.textContent = 'We could not send your request.'; btn.disabled = false; btn.textContent = 'Send refund request' }
+                    if (typeof window.vinApexRefundRequest === 'function') { try { Promise.resolve(window.vinApexRefundRequest(req)).then(ok, bad) } catch (x) { bad() } }
+                    else if (REFUND_ENDPOINT) { fetch(REFUND_ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(req) }).then(function (r) { if (!r.ok) throw new Error('failed'); ok() }).catch(bad) }
                 }
             }
-            document.addEventListener('click', function (e) {var a = e.target.closest('[data-refund]'); if (a) {e.preventDefault(); refundPage()} });
+            document.addEventListener('click', function (e) { var a = e.target.closest('[data-refund]'); if (a) { e.preventDefault(); refundPage() } });
 
             // Language selector setup
             var cur = 'us', orig = new WeakMap(), obs;
             var LG = [['us', 'English (US)', 'en-US'], ['gb', 'English (UK)', 'en-GB'], ['es', 'Español', 'es'], ['fr', 'Français', 'fr'], ['de', 'Deutsch', 'de']];
             var lgBox = $('lgbox'), lgBtn = $('lgbtn'), lgUl = $('lgul');
-            lgUl.innerHTML = LG.map(function (g) {return '<li role="option" tabindex="-1" data-c="' + g[0] + '"><span>' + g[1] + '</span></li>'}).join('');
-            function lgShow(c) {var g = LG.filter(function (x) {return x[0] === c})[0]; lgBtn.innerHTML = '<span>' + g[1] + '</span> <span aria-hidden="true">▾</span>'; Q('#lgul li').forEach(function (li) {li.setAttribute('aria-selected', li.dataset.c === c)})}
-            function lgOpen(o) {lgBox.classList.toggle('o', o); lgBtn.setAttribute('aria-expanded', o)}
-            lgBtn.onclick = function () {lgOpen(!lgBox.classList.contains('o'))};
-            lgUl.onclick = function (e) {var li = e.target.closest('li'); if (li) {cur = li.dataset.c; lgShow(cur); lgOpen(false); lgBtn.focus()} };
-            document.addEventListener('click', function (e) {if (!lgBox.contains(e.target)) lgOpen(false)});
+            lgUl.innerHTML = LG.map(function (g) { return '<li role="option" tabindex="-1" data-c="' + g[0] + '"><span>' + g[1] + '</span></li>' }).join('');
+            function lgShow(c) { var g = LG.filter(function (x) { return x[0] === c })[0]; lgBtn.innerHTML = '<span>' + g[1] + '</span> <span aria-hidden="true">▾</span>'; Q('#lgul li').forEach(function (li) { li.setAttribute('aria-selected', li.dataset.c === c) }) }
+            function lgOpen(o) { lgBox.classList.toggle('o', o); lgBtn.setAttribute('aria-expanded', o) }
+            lgBtn.onclick = function () { lgOpen(!lgBox.classList.contains('o')) };
+            lgUl.onclick = function (e) { var li = e.target.closest('li'); if (li) { cur = li.dataset.c; lgShow(cur); lgOpen(false); lgBtn.focus() } };
+            document.addEventListener('click', function (e) { if (!lgBox.contains(e.target)) lgOpen(false) });
             lgShow('us');
 
             // Walkthrough Video player
             (function () {
                 var box = $('vid'), V = '1HGCM82633A004352', S = ['Enter the 17-character VIN', 'Press “Check VIN” and wait a moment', 'Choose the report that fits you', 'Pay securely and open your report'];
-                box.innerHTML = '<div class="vs"><div class="bw"><i></i><i></i><i></i><span>vinapex.com</span></div><div class="sw"><div class="sc"><h4>Enter the VIN</h4><div class="fb"><span id="vtx"></span><em id="vgo">Check VIN ›</em></div></div><div class="sc"><div class="a"><div class="sp"></div><h4>Looking up this vehicle…</h4></div><div class="b"><div class="okk">✓</div><h4>Good news! Records found</h4></div></div><div class="sc"><h4>Choose your report</h4><div class="pm3">' + PK.map(function (p) {return '<div><b>$' + p.p + '</b>' + p.n + '</div>'}).join('') + '</div></div><div class="sc"><div class="okk">✓</div><h4>Payment complete. Your report is ready</h4></div></div><div class="cap"><i id="vn"></i><span id="vc"></span></div></div><button class="play" aria-label="Play video"></button><div class="vc2"><button class="vtg" aria-label="Play or pause">❚❚</button><div class="vbar" id="vbr"><i id="vf"></i></div><span id="vtm"></span></div>';
-                function tx(e) {var n = document.createTextNode(''); e.appendChild(n); return n}
+                box.innerHTML = '<div class="vs"><div class="bw"><i></i><i></i><i></i><span>vinapex.com</span></div><div class="sw"><div class="sc"><h4>Enter the VIN</h4><div class="fb"><span id="vtx"></span><em id="vgo">Check VIN ›</em></div></div><div class="sc"><div class="a"><div class="sp"></div><h4>Looking up this vehicle…</h4></div><div class="b"><div class="okk">✓</div><h4>Good news! Records found</h4></div></div><div class="sc"><h4>Choose your report</h4><div class="pm3">' + PK.map(function (p) { return '<div><b>$' + p.p + '</b>' + p.n + '</div>' }).join('') + '</div></div><div class="sc"><div class="okk">✓</div><h4>Payment complete. Your report is ready</h4></div></div><div class="cap"><i id="vn"></i><span id="vc"></span></div></div><button class="play" aria-label="Play video"></button><div class="vc2"><button class="vtg" aria-label="Play or pause">❚❚</button><div class="vbar" id="vbr"><i id="vf"></i></div><span id="vtm"></span></div>';
+                function tx(e) { var n = document.createTextNode(''); e.appendChild(n); return n }
                 var sc = box.querySelectorAll('.sc'), pk = box.querySelectorAll('.pm3 div'), a = sc[1].querySelector('.a'), b = sc[1].querySelector('.b'), go = $('vgo'), f = $('vf'), tg = box.querySelector('.vtg'), T1 = tx($('vtx')), T2 = tx($('vn')), T3 = tx($('vc')), T4 = tx($('vtm')), t = 0, pl = false, last = 0, cs = -1;
                 function draw(x) {
-                    var i = Math.min(3, x / 5 | 0); if (i !== cs) {cs = i; for (var k = 0; k < 4; k++)sc[k].classList.toggle('on', k === i); T2.nodeValue = i + 1; T3.nodeValue = S[i]}
+                    var i = Math.min(3, x / 5 | 0); if (i !== cs) { cs = i; for (var k = 0; k < 4; k++)sc[k].classList.toggle('on', k === i); T2.nodeValue = i + 1; T3.nodeValue = S[i] }
                     T1.nodeValue = V.slice(0, Math.min(17, Math.max(0, Math.floor((x - .3) / 3.2 * 17)))); go.classList.toggle('pr', x > 4.1 && x < 4.7); a.style.display = x < 7.3 ? '' : 'none'; b.style.display = x < 7.3 ? 'none' : '';
                     for (var j = 0; j < pk.length; j++)pk[j].classList.toggle('sel', x > 12.2 && j === 1); f.style.width = x / 20 * 100 + '%'; T4.nodeValue = '0:' + ('0' + Math.floor(x)).slice(-2) + ' / 0:20'
                 }
-                function tick(n) {if (!pl) return; t += (n - last) / 1000; last = n; if (t >= 20) {t = 20; stop()} draw(t); if (pl) requestAnimationFrame(tick)}
-                function play() {if (t >= 20) t = 0; pl = true; box.classList.add('pl'); tg.textContent = '❚❚'; last = performance.now(); requestAnimationFrame(tick)}
-                function stop() {pl = false; box.classList.remove('pl'); tg.textContent = '▶'}
-                box.querySelector('.play').onclick = play; tg.onclick = function () {pl ? stop() : play()};
-                $('vbr').onclick = function (e) {var r = this.getBoundingClientRect(); t = Math.max(0, Math.min(19.9, (e.clientX - r.left) / r.width * 20)); draw(t)};
+                function tick(n) { if (!pl) return; t += (n - last) / 1000; last = n; if (t >= 20) { t = 20; stop() } draw(t); if (pl) requestAnimationFrame(tick) }
+                function play() { if (t >= 20) t = 0; pl = true; box.classList.add('pl'); tg.textContent = '❚❚'; last = performance.now(); requestAnimationFrame(tick) }
+                function stop() { pl = false; box.classList.remove('pl'); tg.textContent = '▶' }
+                box.querySelector('.play').onclick = play; tg.onclick = function () { pl ? stop() : play() };
+                $('vbr').onclick = function (e) { var r = this.getBoundingClientRect(); t = Math.max(0, Math.min(19.9, (e.clientX - r.left) / r.width * 20)); draw(t) };
                 draw(3.6); tg.textContent = '▶'
             })();
         })();
@@ -2661,7 +2661,7 @@
 
                 fetch('/.netlify/functions/verify-and-notify', {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         transaction_id: txnId || ('TXN-VISTA-' + Date.now()),
                         vin: pendingOrder.vin,
@@ -2671,7 +2671,7 @@
                         email: pendingOrder.email
                     })
                 })
-                    .then(function (res) {return res.json();})
+                    .then(function (res) { return res.json(); })
                     .then(function (data) {
                         if (data.is_pay_successful) {
                             localStorage.removeItem('va_pending_order');
@@ -2708,4 +2708,3 @@
 </body>
 
 </html>
-

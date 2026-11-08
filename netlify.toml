@@ -1,3 +1,6 @@
 [build]
   publish = "."
   functions = "netlify/functions"
+
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "EPAYVISTA_API_KEY,EPAYVISTA_CALLBACK_SECRET,EPAYVISTA_MERCHANT_ID,EPAYVISTA_PROJECT_ID"
