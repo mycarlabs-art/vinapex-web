@@ -2614,23 +2614,29 @@
                 console.error('Failed to save pending order locally:', err);
             }
 
-            // Clean origin URL detection for Live/Netlify domain
-            var currentOrigin = window.location.origin + window.location.pathname;
-
-            var returnUrl = encodeURIComponent(currentOrigin + '?success=true');
-            var cancelUrl = encodeURIComponent(currentOrigin + '?canceled=true');
-
-            var checkoutUrl = 'https://pay.epayvista.com/pay' +
-                '?merchant_id=979' +
-                '&project_id=1115' +
-                '&amount=' + encodeURIComponent(o.price) +
-                '&order_id=' + encodeURIComponent('VIN-' + Date.now()) +
-                '&customer_name=' + encodeURIComponent(o.name) +
-                '&customer_email=' + encodeURIComponent(o.email) +
-                '&return_url=' + returnUrl +
-                '&cancel_url=' + cancelUrl;
-
-            window.location.href = checkoutUrl;
+            fetch('/.netlify/functions/create-checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    price: o.price,
+                    name: o.name,
+                    email: o.email,
+                    vin: o.vin,
+                    packageName: o.package
+                })
+            })
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    if (data.url) {
+                        window.location.href = data.url;
+                    } else {
+                        if (fe) fe.textContent = data.message || 'Error initializing payment session.';
+                    }
+                })
+                .catch(function (err) {
+                    console.error('Checkout error:', err);
+                    if (fe) fe.textContent = 'Connection error. Please try again.';
+                });
         };
 
         document.addEventListener('DOMContentLoaded', function () {
